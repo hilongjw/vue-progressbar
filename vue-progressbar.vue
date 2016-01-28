@@ -10,7 +10,8 @@ export default {
       default(){
         return {
          color: '#73ccec', 
-         height: '2px'
+         height: '2px',
+         show: false
         }
       }
     }
@@ -37,6 +38,7 @@ export default {
       'width': precent+'%', 
       'height': options.height,
       'background-color': options.color,
+      'opacity': options.show ? 1 : 0
     }"
   >
   </div>

@@ -24,26 +24,51 @@ $ npm install vue-progressbar
 import progress from 'vue-progressbar'
 
 export default {
-  data() {
-      return {
-        precent: 0,
+  data () {
+    return {
+      precent: 20,
         options: {
-          color: '#73ccec',
+          show: true,
+          color: '#F44336',
           height: '2px'
         }
-      }
-    },
-    components: {
-      progress
-    },
-    ready() {
-      setInterval(() => {
-        this.precent++
-          if (this.precent > 100) {
-            this.precent = 0
-          }
-      }, 100)
     }
+  },
+  components: {
+      progress
+  },
+  methods:{
+    start(){
+      this.precent = 0
+      this.options.show = true
+    },
+    increase(num){
+      this.precent = this.precent + Math.floor(num)
+    },
+    decrease(num){
+      this.precent = this.precent - Math.floor(num)
+    },
+    reset(){
+      this.precent = 0
+    },
+    finish(){
+      this.precent = 100
+      setTimeout(() => {
+        this.options.show = false
+      },800)
+    },
+    test(){
+      this.start()
+      let timer = setInterval(() =>{
+        this.increase(Math.random()*10)
+        if(this.precent > 90){
+          this.finish()
+           clearInterval(timer)
+        }
+      },100)
+    }
+    
+  }
 }
 </script>
 
