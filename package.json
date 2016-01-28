@@ -1,0 +1,26 @@
+{
+  "name": "vue-progressbar",
+  "version": "0.1.0",
+  "description": "",
+  "main": "vue-progressbar.vue",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hilongjw/vue-progressbar.git"
+  },
+  "keywords": [
+    "vue",
+    "vue-progressbar",
+    "vue loading progress",
+    "vue progressbar",
+    "progressbar",
+  ],
+  "author": "Awe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hilongjw/vue-progressbar/issues"
+  },
+  "homepage": "https://github.com/hilongjw/vue-progressbar#readme",
+}
