@@ -1,7 +1,7 @@
 {
   "name": "vue-progressbar",
   "version": "0.1.0",
-  "description": "",
+  "description": "A lightweight progress bar for vue",
   "main": "vue-progressbar.vue",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
