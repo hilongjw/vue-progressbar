@@ -37,10 +37,14 @@ export default {
   components: {
       progress
   },
-  methods:{
+  methods: {
     start(){
       this.precent = 0
       this.options.show = true
+      this.options.canSuccess = true
+    },
+    set(num){
+      this.precent = Math.floor(num)
     },
     increase(num){
       this.precent = this.precent + Math.floor(num)
@@ -49,9 +53,16 @@ export default {
       this.precent = this.precent - Math.floor(num)
     },
     reset(){
-      this.precent = 0
+      this.start()
     },
     finish(){
+      this.precent = 100
+      setTimeout(() => {
+        this.options.show = false
+      },800)
+    },
+    failed(){
+      this.options.canSuccess = false
       this.precent = 100
       setTimeout(() => {
         this.options.show = false
@@ -78,7 +89,8 @@ export default {
 
 ```
 
-# API
+# USEAGE
+
 
 
 # License

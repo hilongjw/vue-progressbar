@@ -9,9 +9,11 @@ export default {
       type: Object,
       default(){
         return {
-         color: '#73ccec', 
-         height: '2px',
-         show: false
+          canSuccess: true, 
+          color: 'rgb(143, 255, 199)',
+          failedColor: 'red',
+          show: false,
+          height: '2px'
         }
       }
     }
@@ -37,7 +39,7 @@ export default {
     :style="{
       'width': precent+'%', 
       'height': options.height,
-      'background-color': options.color,
+      'background-color': options.canSuccess? options.color : options.failedColor,
       'opacity': options.show ? 1 : 0
     }"
   >
