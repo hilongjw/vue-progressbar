@@ -18,78 +18,92 @@ $ npm install vue-progressbar
 
 # Usage
 
-```html
-<!-- your component -->
-<script>
-import progress from 'vue-progressbar'
+main.js
 
+```javascript
+
+import progress = require('vue-progressbar')
+
+Vue.use(progress)
+
+```
+
+app.vue
+
+```html
+<script>
+import progress from 'vue-progressbar/progress.vue'
 export default {
-  data () {
-    return {
-      precent: 20,
-        options: {
-          show: true,
-          color: '#F44336',
-          height: '2px'
+  data() {
+      return {
+        myProgress: {
+          precent: 0,
+          options: {
+            show: true,
+            canSuccess: true,
+            color: 'rgb(143, 255, 199)',
+            failedColor: 'red',
+            height: '2px'
+          }
         }
-    }
-  },
-  components: {
+      }
+    },
+    components: {
       progress
-  },
-  methods: {
+    },
+    ready() {
+      this.$progress.setHolder(this.myProgress)
+    }
+}
+</script>
+<template>
+  <progress :precent.sync="myProgress.precent" :options="myProgress.options"> </progress>
+  <router-view></router-view>
+</template>
+
+
+```
+
+any child 
+
+```html
+
+<script>
+export default {
+  methods:{
     start(){
-      this.precent = 0
-      this.options.show = true
-      this.options.canSuccess = true
+      this.$progress.start()
     },
     set(num){
-      this.precent = Math.floor(num)
+      this.$progress.set(num)
     },
     increase(num){
-      this.precent = this.precent + Math.floor(num)
+      this.$progress.increase(num)
     },
     decrease(num){
-      this.precent = this.precent - Math.floor(num)
-    },
-    reset(){
-      this.start()
+      this.$progress.decrease(num)
     },
     finish(){
-      this.precent = 100
-      setTimeout(() => {
-        this.options.show = false
-      },800)
+      this.$progress.finish()
     },
     failed(){
-      this.options.canSuccess = false
-      this.precent = 100
-      setTimeout(() => {
-        this.options.show = false
-      },800)
+      this.$progress.failed()
     },
     test(){
       this.start()
       let timer = setInterval(() =>{
         this.increase(Math.random()*10)
-        if(this.precent > 90){
+        if(this.$progress.get() > 90){
           this.finish()
            clearInterval(timer)
         }
       },100)
     }
-    
   }
 }
 </script>
 
-<template>
-  <progress :precent="precent" :options="options" />
-</template>
-
 ```
-
-# USEAGE
 
 
 
