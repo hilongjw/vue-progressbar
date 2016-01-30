@@ -32,7 +32,7 @@ app.vue
 
 ```html
 <script>
-import progress from 'vue-progressbar/progress.vue'
+import progress from 'vue-progressbar/vue-progressbar.vue'
 export default {
   data() {
       return {
@@ -90,14 +90,12 @@ export default {
       this.$progress.failed()
     },
     test(){
-      this.start()
-      let timer = setInterval(() =>{
-        this.increase(Math.random()*10)
-        if(this.$progress.get() > 90){
-          this.finish()
-           clearInterval(timer)
-        }
-      },100)
+      this.start(1000)
+      this.$http.jsonp('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=7waqfqbprs7pajbz28mqf6vz').then((response) => {
+        this.$progress.finish()
+      }, (response) => {
+        this.$progress.failed()
+      });
     }
   }
 }
