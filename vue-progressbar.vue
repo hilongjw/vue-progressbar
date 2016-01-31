@@ -31,6 +31,7 @@ export default {
   transition: width 0.2s, opacity 0.6s;
   opacity: 1;
   background-color: #73ccec;
+  z-index: 999999;
 }
 </style>
 <template>

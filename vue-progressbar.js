@@ -1,3 +1,4 @@
+'use strict'
 module.exports.install = function(Vue, options) {
   let progressHolder = null
   Vue.prototype.$progress = {
