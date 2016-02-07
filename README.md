@@ -37,7 +37,7 @@ export default {
   data() {
       return {
         myProgress: {
-          precent: 0,
+          percent: 0,
           options: {
             show: true,
             canSuccess: true,
@@ -57,7 +57,7 @@ export default {
 }
 </script>
 <template>
-  <progress :precent.sync="myProgress.precent" :options="myProgress.options"> </progress>
+  <progress :percent.sync="myProgress.percent" :options="myProgress.options"> </progress>
   <router-view></router-view>
 </template>
 
