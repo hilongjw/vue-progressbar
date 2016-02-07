@@ -1,7 +1,7 @@
 <script>
 export default {
   props:{
-    precent: {
+    percent: {
       type: Number,
       required: true
     },
@@ -38,7 +38,7 @@ export default {
   <div 
     class="cov-progress" 
     :style="{
-      'width': precent+'%', 
+      'width': percent+'%',
       'height': options.height,
       'background-color': options.canSuccess? options.color : options.failedColor,
       'opacity': options.show ? 1 : 0
