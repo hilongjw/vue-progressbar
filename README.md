@@ -8,7 +8,7 @@ The demo page is [HERE](http://hilongjw.github.io/vue-progressbar/index.html).
 
 - [Vue.js](https://github.com/yyx990803/vue) `^1.0.0`
 
-# Instllation
+# Installation
 
 ## npm
 
