@@ -22,7 +22,7 @@ main.js
 
 ```javascript
 
-import progress = from 'vue-progressbar'
+import progress from 'vue-progressbar'
 
 Vue.use(progress)
 
