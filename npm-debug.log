@@ -1,0 +1,102 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@3.9.3
+3 info using node@v6.2.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/longyi/Desktop/code/github/vue-progressbar',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/longyi/.npm/vue-progressbar/0.3.0/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/longyi/.npm correctMkdir not in flight; initializing
+10 info lifecycle vue-progressbar@0.3.0~prepublish: vue-progressbar@0.3.0
+11 silly lifecycle vue-progressbar@0.3.0~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/longyi/.npm/vue-progressbar/0.3.0/package.tgz',
+12 verbose tar pack   '/Users/longyi/Desktop/code/github/vue-progressbar' ]
+13 verbose tarball /Users/longyi/.npm/vue-progressbar/0.3.0/package.tgz
+14 verbose folder /Users/longyi/Desktop/code/github/vue-progressbar
+15 verbose addLocalTarball adding from inside cache /Users/longyi/.npm/vue-progressbar/0.3.0/package.tgz
+16 verbose correctMkdir /Users/longyi/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd vue-progressbar@0.3.0
+18 verbose afterAdd /Users/longyi/.npm/vue-progressbar/0.3.0/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/longyi/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/longyi/.npm/vue-progressbar/0.3.0/package/package.json written
+21 silly publish { name: 'vue-progressbar',
+21 silly publish   version: '0.3.0',
+21 silly publish   description: 'A lightweight progress bar for vue',
+21 silly publish   main: 'vue-progressbar.es5.js',
+21 silly publish   scripts: { test: 'echo "Error: no test specified" && exit 1' },
+21 silly publish   repository:
+21 silly publish    { type: 'git',
+21 silly publish      url: 'git+https://github.com/hilongjw/vue-progressbar.git' },
+21 silly publish   keywords:
+21 silly publish    [ 'vue',
+21 silly publish      'vue-progressbar',
+21 silly publish      'vue loading progress',
+21 silly publish      'vue progressbar',
+21 silly publish      'progressbar' ],
+21 silly publish   author: { name: 'Awe' },
+21 silly publish   license: 'MIT',
+21 silly publish   bugs: { url: 'https://github.com/hilongjw/vue-progressbar/issues' },
+21 silly publish   homepage: 'https://github.com/hilongjw/vue-progressbar#readme',
+21 silly publish   readme: '# vue-progressbar\n\n# Demo\n\nThe demo page is [HERE](http://hilongjw.github.io/vue-progressbar/index.html).\n\n# Requirements\n\n- [Vue.js](https://github.com/yyx990803/vue) `^1.0.0`\n\n# Installation\n\n## npm\n\n```shell\n$ npm install vue-progressbar\n```\n\n# Usage\n\nmain.js\n\n```javascript\n\nimport VueProgressBar from \'vue-progressbar\'\n\nVue.use(VueProgressBar, {\n  color: \'rgb(143, 255, 199)\',\n  failedColor: \'red\',\n  height: \'2px\'\n})\n\n```\n\nRoot App.vue\n\n```html\n<template>\n    <div id="app">\n        <!-- for example router view -->\n        <router-view></router-view>\n        <!-- set progressbar -->\n        <vue-progress-bar></vue-progress-bar>\n    </div>\n</template>\n```\n\nAny child \n\n```html\n\n<script>\nexport default {\n  methods:{\n    start () {\n        this.$Progress.start()\n    },\n    set (num) {\n        this.$Progress.set(num)\n    },\n    increase (num) {\n        this.$Progress.increase(num)\n    },\n    decrease (num) {\n        this.$Progress.decrease(num)\n    },\n    finish () {\n        this.$Progress.finish()\n    },\n    fail () {\n        this.$Progress.fail()\n    },\n    test(){\n      this.$Progress.start()\n\n      this.$http.jsonp(\'http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=7waqfqbprs7pajbz28mqf6vz\')\n      .then((response) => {\n          this.$Progress.finish()\n      }, (response) => {\n          this.$Progress.fail()\n      })\n    }\n  }\n}\n</script>\n\n```\n\n# License\n\n[The MIT License](http://opensource.org/licenses/MIT)\n\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: '28832db3772ffaa2026961bd14964217bf3d53d3',
+21 silly publish   _id: 'vue-progressbar@0.3.0',
+21 silly publish   _shasum: 'cdd8be1ba1364a460cab8c6b0670a59e89cce7d2',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name vue-progressbar
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry data Result {
+26 silly mapToRegistry   raw: 'vue-progressbar',
+26 silly mapToRegistry   scope: null,
+26 silly mapToRegistry   name: 'vue-progressbar',
+26 silly mapToRegistry   rawSpec: '',
+26 silly mapToRegistry   spec: 'latest',
+26 silly mapToRegistry   type: 'tag' }
+27 silly mapToRegistry uri https://registry.npmjs.org/vue-progressbar
+28 verbose publish registryBase https://registry.npmjs.org/
+29 silly publish uploading /Users/longyi/.npm/vue-progressbar/0.3.0/package.tgz
+30 verbose request uri https://registry.npmjs.org/vue-progressbar
+31 verbose request sending authorization for write operation
+32 info attempt registry request try #1 at 23:06:23
+33 verbose request using bearer token for auth
+34 verbose request id 1f9a16e50e920ccc
+35 http request PUT https://registry.npmjs.org/vue-progressbar
+36 info retry will retry, error on last attempt: Error: connect ETIMEDOUT 151.101.88.162:443
+37 info attempt registry request try #2 at 23:06:47
+38 verbose request using bearer token for auth
+39 http request PUT https://registry.npmjs.org/vue-progressbar
+40 info retry will retry, error on last attempt: Error: read ETIMEDOUT
+41 info attempt registry request try #3 at 23:09:37
+42 verbose request using bearer token for auth
+43 http request PUT https://registry.npmjs.org/vue-progressbar
+44 verbose request invalidating /Users/longyi/.npm/registry.npmjs.org/vue-progressbar on PUT
+45 error publish Failed PUT undefined
+46 verbose stack Error: connect ETIMEDOUT 151.101.88.162:443
+46 verbose stack     at Object.exports._errnoException (util.js:1007:11)
+46 verbose stack     at exports._exceptionWithHostPort (util.js:1030:20)
+46 verbose stack     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1080:14)
+47 verbose cwd /Users/longyi/Desktop/code/github/vue-progressbar
+48 error Darwin 15.6.0
+49 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+50 error node v6.2.1
+51 error npm  v3.9.3
+52 error code ETIMEDOUT
+53 error errno ETIMEDOUT
+54 error syscall connect
+55 error network connect ETIMEDOUT 151.101.88.162:443
+56 error network This is most likely not a problem with npm itself
+56 error network and is related to network connectivity.
+56 error network In most cases you are behind a proxy or have bad network settings.
+56 error network
+56 error network If you are behind a proxy, please make sure that the
+56 error network 'proxy' config is set properly.  See: 'npm help config'
+57 verbose exit [ 1, true ]
