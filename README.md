@@ -22,88 +22,69 @@ main.js
 
 ```javascript
 
-import progress from 'vue-progressbar'
+import VueProgressBar from 'vue-progressbar'
 
-Vue.use(progress)
+Vue.use(VueProgressBar, {
+  color: 'rgb(143, 255, 199)',
+  failedColor: 'red',
+  height: '2px'
+})
 
 ```
 
-app.vue
+Root App.vue
 
 ```html
-<script>
-import progress from 'vue-progressbar/vue-progressbar.vue'
-export default {
-  data() {
-      return {
-        myProgress: {
-          percent: 0,
-          options: {
-            show: true,
-            canSuccess: true,
-            color: 'rgb(143, 255, 199)',
-            failedColor: 'red',
-            height: '2px'
-          }
-        }
-      }
-    },
-    components: {
-      progress
-    },
-    ready() {
-      this.$progress.setHolder(this.myProgress)
-    }
-}
-</script>
 <template>
-  <progress :percent.sync="myProgress.percent" :options="myProgress.options"> </progress>
-  <router-view></router-view>
+    <div id="app">
+        <!-- for example router view -->
+        <router-view></router-view>
+        <!-- set progressbar -->
+        <vue-progress-bar></vue-progress-bar>
+    </div>
 </template>
-
-
 ```
 
-any child 
+Any child 
 
 ```html
 
 <script>
 export default {
   methods:{
-    start(){
-      this.$progress.start()
+    start () {
+        this.$Progress.start()
     },
-    set(num){
-      this.$progress.set(num)
+    set (num) {
+        this.$Progress.set(num)
     },
-    increase(num){
-      this.$progress.increase(num)
+    increase (num) {
+        this.$Progress.increase(num)
     },
-    decrease(num){
-      this.$progress.decrease(num)
+    decrease (num) {
+        this.$Progress.decrease(num)
     },
-    finish(){
-      this.$progress.finish()
+    finish () {
+        this.$Progress.finish()
     },
-    failed(){
-      this.$progress.failed()
+    fail () {
+        this.$Progress.fail()
     },
     test(){
-      this.start(1000)
-      this.$http.jsonp('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=7waqfqbprs7pajbz28mqf6vz').then((response) => {
-        this.$progress.finish()
+      this.$Progress.start()
+
+      this.$http.jsonp('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=7waqfqbprs7pajbz28mqf6vz')
+      .then((response) => {
+          this.$Progress.finish()
       }, (response) => {
-        this.$progress.failed()
-      });
+          this.$Progress.fail()
+      })
     }
   }
 }
 </script>
 
 ```
-
-
 
 # License
 
