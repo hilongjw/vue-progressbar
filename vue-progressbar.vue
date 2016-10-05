@@ -1,5 +1,5 @@
-<style scoped>
-.cov-progress {
+<style>
+.__cov-progress {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -13,7 +13,7 @@
 }
 </style>
 <template>
-    <div class="cov-progress" :style="{
+    <div class="__cov-progress" :style="{
       'width': progress.percent+'%',
       'height': progress.options.height,
       'background-color': progress.options.canSuccess? progress.options.color : progress.options.failedColor,
