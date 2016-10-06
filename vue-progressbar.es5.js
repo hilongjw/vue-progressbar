@@ -9,7 +9,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 module.exports.install = function (Vue) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
+    var isVueNext = Vue.version.split('.')[0] === '2';
+
     Vue.component('vue-progress-bar', _vueProgressbar2.default);
+
     var Progress = {
         $root: null,
         state: {
@@ -91,15 +94,27 @@ module.exports.install = function (Vue) {
         }
     };
 
-    Vue.mixin({
-        beforeCreate: function beforeCreate() {
-            if (!Progress.$root) {
-                if (this === this.$root) {
-                    Progress.init(this);
+    if (isVueNext) {
+        Vue.mixin({
+            beforeCreate: function beforeCreate() {
+                if (!Progress.$root) {
+                    if (this === this.$root) {
+                        Progress.init(this);
+                    }
                 }
             }
-        }
-    });
+        });
+    } else {
+        Vue.mixin({
+            init: function init() {
+                if (!Progress.$root) {
+                    if (this === this.$root) {
+                        Progress.init(this);
+                    }
+                }
+            }
+        });
+    }
 
     Vue.prototype.$Progress = Progress;
 };
