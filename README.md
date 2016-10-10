@@ -6,7 +6,7 @@ The demo page is [HERE](http://hilongjw.github.io/vue-progressbar/index.html).
 
 # Requirements
 
-- [Vue.js](https://github.com/yyx990803/vue) `^1.0.0`
+- [Vue.js](https://github.com/yyx990803/vue) `^1.0.0` and `^2.0.0`
 
 # Installation
 
