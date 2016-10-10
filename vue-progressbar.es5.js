@@ -44,6 +44,7 @@ module.exports.install = function (Vue) {
             var _this = this;
 
             if (!time) time = 3000;
+            if (!this.$root) return;
             this.$root.RADON_LOADING_BAR.percent = 0;
             this.$root.RADON_LOADING_BAR.options.show = true;
             this.$root.RADON_LOADING_BAR.options.canSuccess = true;
@@ -84,6 +85,7 @@ module.exports.install = function (Vue) {
             }, 800);
         },
         finish: function finish() {
+            if (!this.$root) return;
             this.$root.RADON_LOADING_BAR.percent = 100;
             this.hide();
         },

@@ -1,4 +1,5 @@
 'use strict'
+
 import vueProgressBar from './vue-progressbar.vue'
 
 module.exports.install = function (Vue, options = {}) {
@@ -37,6 +38,7 @@ module.exports.install = function (Vue, options = {}) {
         },
         start (time) {
             if (!time) time = 3000
+            if (!this.$root) return
             this.$root.RADON_LOADING_BAR.percent = 0
             this.$root.RADON_LOADING_BAR.options.show = true
             this.$root.RADON_LOADING_BAR.options.canSuccess = true
@@ -75,6 +77,7 @@ module.exports.install = function (Vue, options = {}) {
             }, 800)
         },
         finish () {
+            if (!this.$root) return
             this.$root.RADON_LOADING_BAR.percent = 100
             this.hide()
         },
