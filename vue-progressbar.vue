@@ -25,7 +25,7 @@
 export default {
     computed: {
         progress () {
-            return this.$root.RADON_LOADING_BAR
+            return window.VueProgressBarEventBus.RADON_LOADING_BAR
         }
     }
 }

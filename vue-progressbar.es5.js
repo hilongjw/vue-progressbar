@@ -11,8 +11,6 @@ module.exports.install = function (Vue) {
 
     var isVueNext = Vue.version.split('.')[0] === '2';
 
-    Vue.component('vue-progress-bar', _vueProgressbar2.default);
-
     var Progress = {
         $root: null,
         state: {
@@ -21,24 +19,6 @@ module.exports.install = function (Vue) {
         },
         init: function init(vm) {
             this.$root = vm;
-            var data = vm.$options.data;
-            data = typeof data === 'function' ? data.call(vm) : data || {};
-
-            if (!data) {
-                console.error('data functions should return an object.');
-            }
-
-            data['RADON_LOADING_BAR'] = {
-                percent: 0,
-                options: {
-                    canSuccess: true,
-                    show: false,
-                    color: options.color || 'rgb(143, 255, 199)',
-                    failedColor: options.failedColor || 'red',
-                    height: options.height || '2px'
-                }
-            };
-            vm.$options.data = data;
         },
         start: function start(time) {
             var _this = this;
@@ -96,27 +76,26 @@ module.exports.install = function (Vue) {
         }
     };
 
-    if (isVueNext) {
-        Vue.mixin({
-            beforeCreate: function beforeCreate() {
-                if (!Progress.$root) {
-                    if (this === this.$root) {
-                        Progress.init(this);
-                    }
+    var VueProgressBarEventBus = new Vue({
+        data: {
+            RADON_LOADING_BAR: {
+                percent: 0,
+                options: {
+                    canSuccess: true,
+                    show: false,
+                    color: options.color || 'rgb(143, 255, 199)',
+                    failedColor: options.failedColor || 'red',
+                    height: options.height || '2px'
                 }
             }
-        });
-    } else {
-        Vue.mixin({
-            init: function init() {
-                if (!Progress.$root) {
-                    if (this === this.$root) {
-                        Progress.init(this);
-                    }
-                }
-            }
-        });
-    }
+        }
+    });
+
+    window.VueProgressBarEventBus = VueProgressBarEventBus;
+
+    Progress.init(VueProgressBarEventBus);
+
+    Vue.component('vue-progress-bar', _vueProgressbar2.default);
 
     Vue.prototype.$Progress = Progress;
 };
