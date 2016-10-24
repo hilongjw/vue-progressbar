@@ -25,7 +25,7 @@ module.exports.install = function (Vue) {
 
             if (!time) time = 3000;
             if (!this.$root) return;
-            this.$root.RADON_LOADING_BAR.percent = 0;
+            this.$root.RADON_LOADING_BAR.percent = this.$root.RADON_LOADING_BAR.percent;
             this.$root.RADON_LOADING_BAR.options.show = true;
             this.$root.RADON_LOADING_BAR.options.canSuccess = true;
             this.state.cut = 10000 / Math.floor(time);
@@ -63,6 +63,9 @@ module.exports.install = function (Vue) {
                     }, 100);
                 });
             }, 800);
+        },
+        pause () {
+            clearInterval(this.state.timer);
         },
         finish: function finish() {
             if (!this.$root) return;
