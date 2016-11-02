@@ -64,7 +64,7 @@ module.exports.install = function (Vue) {
                 });
             }, 800);
         },
-        pause () {
+        pause: function () {
             clearInterval(this.state.timer);
         },
         finish: function finish() {
