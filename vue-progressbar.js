@@ -83,8 +83,10 @@ module.exports.install = function (Vue, options = {}) {
             }
         }  
     })
-
-    window.VueProgressBarEventBus = VueProgressBarEventBus
+    
+    if (typeof window !== 'undefined') {
+        window.VueProgressBarEventBus = VueProgressBarEventBus
+    }
 
     Progress.init(VueProgressBarEventBus)
     
