@@ -25,7 +25,9 @@
 export default {
     computed: {
         progress () {
-            return window.VueProgressBarEventBus.RADON_LOADING_BAR
+            if (typeof window !== 'undefined'){
+                return window.VueProgressBarEventBus.RADON_LOADING_BAR
+            }
         }
     }
 }
