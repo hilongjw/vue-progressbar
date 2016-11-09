@@ -10,6 +10,7 @@ module.exports.install = function (Vue) {
     var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
     var isVueNext = Vue.version.split('.')[0] === '2';
+    var inBrowser = typeof window !== 'undefined';
 
     var Progress = {
         $root: null,
@@ -64,7 +65,7 @@ module.exports.install = function (Vue) {
                 });
             }, 800);
         },
-        pause: function () {
+        pause: function pause() {
             clearInterval(this.state.timer);
         },
         finish: function finish() {
@@ -94,9 +95,10 @@ module.exports.install = function (Vue) {
         }
     });
 
-    window.VueProgressBarEventBus = VueProgressBarEventBus;
-
-    Progress.init(VueProgressBarEventBus);
+    if (inBrowser) {
+        window.VueProgressBarEventBus = VueProgressBarEventBus;
+        Progress.init(VueProgressBarEventBus);
+    }
 
     Vue.component('vue-progress-bar', _vueProgressbar2.default);
 
