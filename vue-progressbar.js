@@ -4,7 +4,8 @@ import vueProgressBar from './vue-progressbar.vue'
 
 module.exports.install = function (Vue, options = {}) {
     const isVueNext = Vue.version.split('.')[0] === '2'
-    
+    const inBrowser = typeof window !== 'undefined'
+
     let Progress = {
         $root: null,
         state: {
@@ -84,9 +85,10 @@ module.exports.install = function (Vue, options = {}) {
         }  
     })
 
-    window.VueProgressBarEventBus = VueProgressBarEventBus
-
-    Progress.init(VueProgressBarEventBus)
+    if (inBrowser) {
+        window.VueProgressBarEventBus = VueProgressBarEventBus
+        Progress.init(VueProgressBarEventBus)
+    }
     
     Vue.component('vue-progress-bar', vueProgressBar)
 

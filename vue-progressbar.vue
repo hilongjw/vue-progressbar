@@ -22,10 +22,26 @@
     </div>
 </template>
 <script>
+const inBrowser = typeof window !== 'undefined'
 export default {
+    name: 'VueProgress',
+    serverCacheKey: () => 'Progress',
     computed: {
         progress () {
-            return window.VueProgressBarEventBus.RADON_LOADING_BAR
+            if (inBrowser) {
+                return window.VueProgressBarEventBus.RADON_LOADING_BAR
+            } else {
+                return {
+                    percent: 0,
+                    options: {
+                        canSuccess: true,
+                        show: false,
+                        color: 'rgb(143, 255, 199)',
+                        failedColor: 'red',
+                        height: '2px'
+                    }
+                }
+            }
         }
     }
 }
