@@ -21,6 +21,8 @@ module.exports.install = function(Vue) {
     state: {
       tFailColor: '',
       tColor: '',
+      tLocation: '',
+      tTransition: {},
       timer: null,
       cut: 0
     },
@@ -67,9 +69,11 @@ module.exports.install = function(Vue) {
           setTimeout(function() {
             this2.$root.RADON_LOADING_BAR.percent = 0;
           }, 100);
-          setTimeout(function() {
-            this2.revert();
-          }, 300);
+          if (this2.$root.RADON_LOADING_BAR.options.autoRevert) {
+            setTimeout(function() {
+              this2.revert();
+            }, 300);
+          }
         });
       }, 800);
     },
@@ -92,6 +96,12 @@ module.exports.install = function(Vue) {
     setColor: function(color) {
       this.$root.RADON_LOADING_BAR.options.color = color;
     },
+    setLocation: function(loc) {
+      this.$root.RADON_LOADING_BAR.options.location = loc;
+    },
+    setTransition: function(transition) {
+      this.$root.RADON_LOADING_BAR.options.transition = transition;
+    },
     tempFailColor: function(color) {
       this.state.tFailColor = this.$root.RADON_LOADING_BAR.options.failedColor;
       this.$root.RADON_LOADING_BAR.options.failedColor = color;
@@ -99,6 +109,14 @@ module.exports.install = function(Vue) {
     tempColor: function(color) {
       this.state.tColor = this.$root.RADON_LOADING_BAR.options.color;
       this.$root.RADON_LOADING_BAR.options.color = color;
+    },
+    tempLocation: function(loc) {
+      this.state.tLocation = this.$root.RADON_LOADING_BAR.options.location;
+      this.$root.RADON_LOADING_BAR.options.location = loc;
+    },
+    tempTransition: function(transition) {
+      this.state.tTransition = this.$root.RADON_LOADING_BAR.options.transition;
+      this.$root.RADON_LOADING_BAR.options.transition = transition;
     },
     revertColor: function() {
       this.$root.RADON_LOADING_BAR.options.color = this.state.tColor;
@@ -108,13 +126,72 @@ module.exports.install = function(Vue) {
       this.$root.RADON_LOADING_BAR.options.failedColor = this.state.tFailColor;
       this.state.tFailColor = '';
     },
+    revertLocation: function() {
+      this.$root.RADON_LOADING_BAR.options.location = this.state.tLocation;
+      this.state.tLocation = '';
+    },
+    revertTransition: function() {
+      this.$root.RADON_LOADING_BAR.options.transition = this.state.tTransition;
+      this.state.tTransition = {};
+    },
     revert: function() {
-      if (this.$root.RADON_LOADING_BAR.options.autoRevert) {
-        if (this.state.tColor !== '') {
-          this.revertColor();
-        }
-        if (this.state.tFailColor !== '') {
-          this.revertFailColor();
+      if (this.state.tColor !== '') {
+        this.revertColor();
+      }
+      if (this.state.tFailColor !== '') {
+        this.revertFailColor();
+      }
+      if (this.state.tLocation !== '') {
+        this.revertLocation();
+      }
+      if (this.state.tTransition.speed !== undefined || this.state.tTransition.opacity !== undefined) {
+        this.revertTransition();
+      }
+    },
+    parseMeta: function(meta) {
+      for (var x in meta.func) {
+        let func = meta.func[x];
+        switch (func.call) {
+          case 'color':
+            switch (func.modifier) {
+              case 'set':
+                this.setColor(func.argument);
+                break;
+              case 'temp':
+                this.tempColor(func.argument);
+                break;
+            }
+            break;
+          case 'fail':
+            switch (func.modifier) {
+              case 'set':
+                this.setFailColor(func.argument);
+                break;
+              case 'temp':
+                this.tempFailColor(func.argument);
+                break;
+            }
+            break;
+          case 'location':
+            switch (func.modifier) {
+              case 'set':
+                this.setLocation(func.argument);
+                break;
+              case 'temp':
+                this.tempLocation(func.argument);
+                break;
+            }
+            break;
+          case 'transition':
+            switch (func.modifier) {
+              case 'set':
+                this.setTransition(func.argument);
+                break;
+              case 'temp':
+                this.tempTransition(func.argument);
+                break;
+            }
+            break;
         }
       }
     }
@@ -129,8 +206,14 @@ module.exports.install = function(Vue) {
           show: false,
           color: options.color || 'rgb(143, 255, 199)',
           failedColor: options.failedColor || 'red',
-          height: options.height || '2px',
-          autoRevert: options.autoRevert !== undefined ? options.autoRevert : true
+          thickness: options.thickness || '2px',
+          autoRevert: options.autoRevert !== undefined ? options.autoRevert : true,
+          location: options.location || 'top',
+          inverse: options.inverse || false,
+          transition: options.transition || {
+            speed: '0.2s',
+            opacity: '0.6s'
+          }
         }
       }
     }

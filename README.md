@@ -1,10 +1,14 @@
 # vue-progressbar
 
-Table of Contents
+# Table of Contents
 * [___Demo___](https://github.com/XeonPowder/vue-progressbar#demo)
 * [___Requirements___](https://github.com/XeonPowder/vue-progressbar#requirements)
 * [___Installation___](https://github.com/XeonPowder/vue-progressbar#installation)
-* [___Usage___](https://github.com/XeonPowder/vue-progressbar#usage)
+* [___Usage___](https://github.com/XeonPowder/vue-progressbar#usage)  
+ * [___Constructor Options___](#constructor-options)
+ * [___Implementation___](#implementation)
+ * [___vue-router___](#vue-router)  
+   * [___meta options___](#vue--router-meta-options)  
 * [___Methods___](https://github.com/XeonPowder/vue-progressbar#methods)
 * [___Examples___](https://github.com/XeonPowder/vue-progressbar#examples)
 * [___License___](https://github.com/XeonPowder/vue-progressbar#license)
@@ -15,8 +19,12 @@ Table of Contents
 - [Vue.js](https://github.com/vuejs/vue) `1.x` or `2.x`  
 
 # Installation
-```shell
+```bash
+# npm
 $ npm install vue-progressbar
+
+#yarn
+$ yarn vue-progressbar
 ```
 # Usage
 
@@ -30,8 +38,14 @@ import App from './App'
 const options = {
   color: '#bffaf3',
   failedColor: '#874b4b',
-  height: '5px',
-  autoRevert: true
+  thickness: '5px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s'
+  },
+  autoRevert: true,
+  location: 'left',
+  inverse: false
 }
 
 Vue.use(VueProgressBar, options)
@@ -40,24 +54,22 @@ new Vue({
   ...App
 }).$mount('#app')
 
+
 ```
-possible `options` include:
+## Constructor Options
+|key|description|defualt|options|
+|:--|--|--|
+| `color`|color of the progress bar|`'rgb(143, 255, 199)'`|`RGB` `HEX` `HSL` `HSV` `VEC`|
+|`failedColor`|color of the progress bar upon load fail|`'red'`|`RGB`, `HEX`, `HSL`, `HSV`, `VEC`
+|`thickness`|thickness of the progress bar|`'2px'`|`px`, `em`, `pt`, `%`, `vh`, `vw`|
+|`transition`|transition speed/opacity of the progress bar|`{speed: '0.2s', opacity: '0.6s'}`|`speed`, `opacity`|
+|`autoRevert`|will temporary color changes automatically revert upon completion or fail|`true`|`true`, `false`|
+|`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
+|`inverse`|inverse the direction of the progress bar|`false`|`true`, `false`|
 
-* `color: '#000000'`  
- * default: `'rgb(143, 255, 199)'`
- * description: `color of the progress bar`
-* `failedColor: 'rgb(255, 0, 0)'`
- * default: `'red'`
- * description: `color of the progress bar upon load fail`
-* `height: '2px'`
- * default: `'2px'`
- * description: `height of the progress bar`
-* `autoRevert: false`
- * default: `true`
- * description: `will temporary color changes automatically revert upon completion or fail`
+## Implementation
 
-
-Template App.vue
+App.vue
 ```html
 <template>
     <div id="app">
@@ -67,37 +79,7 @@ Template App.vue
         <vue-progress-bar></vue-progress-bar>
     </div>
 </template>
-```
-Basic App.vue
-```html
-<!-- for a progress bar on each router page change -->
-<script>
-export default {
-  created () {
-    //  [App.vue specific] When App.vue is first loaded start the progress bar
-    this.$Progress.start()
-    //  hook the progress bar to start before we move router-view
-    this.$router.beforeEach((to, from, next) => {
-      //  start the progress bar
-      this.$Progress.start()
-      //  continue to next page
-      next()
-    })
-    //  hook the progress bar to finish after we've finished moving router-view
-    this.$router.afterEach((to, from) => {
-      //  finish the progress bar
-      this.$Progress.finish()
-    })
-  },
-  mounted () {
-    //  [App.vue specific] When App.vue is finish loading finish the progress bar
-    this.$Progress.finish()
-  }
-}
-</script>
-```
-Meta App.vue
-```html
+
 <script>
 export default {
   mounted () {
@@ -107,54 +89,16 @@ export default {
   created () {
     //  [App.vue specific] When App.vue is first loaded start the progress bar
     this.$Progress.start()
-
     //  hook the progress bar to start before we move router-view
     this.$router.beforeEach((to, from, next) => {
-
       //  does the page we want to go to have a meta.progress object
       if (to.meta.progress !== undefined) {
-
-        //  set p for easier calling
-        let p = to.meta.progress
-
-        //  loop through the array of func from the meta
-        for (var x in p.func) {
-
-          //  set func for easier calling
-          let func = p.func[x]
-
-          //  switch on the func's call field
-          switch (func.call) {
-
-            //  temp == short for tempColor
-            case 'temp':
-              //  set the progress color (temporarily)
-              this.$Progress.tempColor(func.color)
-              break
-
-            //  tempFail == short for tempFailColor
-            case 'tempFail':
-              //  set the fail color (temporarily)
-              this.$Progress.tempFailColor(func.color)
-              break
-
-            // set == short for setColor
-            case 'set':
-              //  set the progress color (permanently)
-              this.$Progress.setColor(func.color)
-              break
-
-            // setFail == short for setFailColor        
-            case 'setFail':
-              //  set the fail color (permanently)
-              this.$Progress.setFailColor(func.color)
-              break
-          }
-        }
+        let meta = to.meta.progress
+        // parse meta tags
+        this.$Progress.parseMeta(meta)
       }
       //  start the progress bar
       this.$Progress.start()
-
       //  continue to next page
       next()
     })
@@ -167,7 +111,7 @@ export default {
 }
 </script>
 ```
-vue-router meta
+## vue-router
 ```js
 export default [
   {
@@ -177,55 +121,48 @@ export default [
     meta: {
       progress: {
         func: [
-          {call: 'temp', color: '#ffb000'},
-          {call: 'tempFail', color: '#6e0000'}
+          {call: 'color', modifier: 'temp', argument: '#ffb000'},
+          {call: 'fail', modifier: 'temp', argument: '#6e0000'},
+          {call: 'location', modifier: 'temp', argument: 'top'},
+          {call: 'transition', modifier: 'temp', argument: {speed: '1.5s', opacity: '0.6s'}}
         ]
       }
     }
   }
 ]
 ```
+### vue-router meta options
+
+|call|modifier|argument|example|
+|:--|--|--|--|
+|color|`set`, `temp`|`string`|`{call: 'color', modifier: 'temp', argument: '#ffb000'}`|
+|fail|`set`, `temp`|`string`|`{call: 'fail', modifier: 'temp', argument: '#ffb000'}`|
+|location|`set`, `temp`|`string`|`{call: 'location', modifier: 'temp', argument: 'top'}`|
+|transition|`set`, `temp`|` object`|`{call: 'transition', modifier: 'temp', argument: {speed: '0.6s', opacity: '0.6s'}}`|
+
 # Methods
-```js
-//  start the progress bar loading
-this.$Progress.start()
+|function|description|parameters|example|
+|:--|--|--|--|
+|start|start the progress bar loading|`N/A`|`this.$Progress.start()`|
+|finish|finish the progress bar loading|`N/A`|`this.$Progress.finish()`|
+|fail|cause the progress bar to end and fail|`N/A`|`this.$Progress.fail()`|
+|increase|increase the progress bar by a certain %|`number: integer`|`this.$Progress.increase(number)`|
+|decrease|decrease the progress bar by a certain %|`number: integer`|`this.$Progress.decrease(number)`|
+|set|set the progress bar %|`number: integer`|`this.$Progress.set(number)`|
+|setFailColor|cause the fail color to permanently change|`color: string`|`this.$Progress.setFailColor(color)`|
+|setColor|cause the progress color to permanently change|`color: string`|`this.$Progress.setColor(color)`|
+|setLocation|cause the progress bar location to permanently change|`location: string`|`this.$Progress.setLocation(location)`|
+|setTransition|cause the progress bar transition speed/opacity to permanently change|`transition: object`|`this.$Progress.setTransition(transition)`|
+|tempFailColor|cause the fail color to change (temporarily)|`color: string`|`this.$Progress.tempFailColor(color)`|
+|tempColor|cause the progress color to change (temporarily)|`color: string`|`this.$Progress.tempColor(color)`|
+|tempLocation|cause the progress bar location to change (temporarily)|`location: string`|`this.$Progress.tempLocation(location)`|
+|tempTransition|cause the progress bar location to change (temporarily)|`transition: object`|`this.$Progress.tempTransition(transition)`|
+|revertColor|cause the temporarily set progress color to revert back to it's previous color|`N/A`|`this.$Progress.revertColor()`|
+|revertFailColor|cause the temporarily set fail color to revert back to it's previous color|`N/A`|`this.$Progress.revertFailColor()`|
+|revertTransition|cause the temporarily set transition to revert back to it's previous state|`N/A`|`this.$Progress.revertTransition()`|
+|revert|cause the temporarily set progress and/or fail color to their previous colors|`N/A`|`this.$Progress.revert()`|
+|parseMeta|parses progress meta data|`meta: object`|`this.$Progress.parseMeta(meta)`|
 
-//  set the progress bar %
-this.$Progress.set(num)
-
-//  increase the progress bar by a certain %
-this.$Progress.increase(num)
-
-//  decrease the progress bar by a certain %
-this.$Progress.decrease(num)
-
-//  finish the progress bar loading
-this.$Progress.finish()
-
-//  cause the progress bar to end and fail
-this.$Progress.fail()
-
-//  cause the fail color to permanently change
-this.$Progress.setFailColor(color)
-
-//  cause the progress color to permanently change
-this.$Progress.setColor(color)
-
-//  cause the fail color to change (temporarily)
-this.$Progress.tempFailColor(color)
-
-//  cause the progress color to change (temporarily)
-this.$Progress.tempColor(color)
-
-//  cause the temporarily set progress color to revert back to it's previous color
-this.$Progress.revertColor(color)
-
-//  cause the temporarily set fail color to revert back to it's previous color
-this.$Progress.revertFailColor(color)
-
-//  cause the temporarily set progress and/or fail color to their previous colors
-this.$Progress.revert()
-```
 # Examples
 Loading Data (vue-resource)
 ```html

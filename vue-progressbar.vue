@@ -1,24 +1,12 @@
 <style>
 .__cov-progress {
   position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  height: 2px;
-  width: 0%;
-  transition: width 0.2s, opacity 0.6s;
   opacity: 1;
-  background-color: #73ccec;
   z-index: 999999;
 }
 </style>
 <template>
-<div class="__cov-progress" :style="{
-      'width': progress.percent + '%',
-      'height': progress.options.height,
-      'background-color': progress.options.canSuccess ? progress.options.color : progress.options.failedColor,
-      'opacity': progress.options.show ? 1 : 0
-    }">
+<div class="__cov-progress" :style="style">
 </div>
 </template>
 <script>
@@ -27,6 +15,35 @@ export default {
   name: 'VueProgress',
   serverCacheKey: () => 'Progress',
   computed: {
+    style() {
+      let location = this.progress.options.location
+      let style = {
+        'background-color': this.progress.options.canSuccess ? this.progress.options.color : this.progress.options.failedColor,
+        'opacity': this.progress.options.show ? 1 : 0
+      }
+      if (location == 'top' || location == 'bottom') {
+        location === 'top' ? style.top = '0px' : style.bottom = '0px'
+        if (!this.progress.options.inverse) {
+          style.left = '0px'
+        } else {
+          style.right = '0px'
+        }
+        style.width = this.progress.percent + '%'
+        style.height = this.progress.options.thickness
+        style.transition = "width " + this.progress.options.transition.speed + ", opacity " + this.progress.options.transition.opacity
+      } else if (location == 'left' || location == 'right') {
+        location === 'left' ? style.left = '0px' : style.right = '0px'
+        if (!this.progress.options.inverse) {
+          style.bottom = '0px'
+        } else {
+          style.top = '0px'
+        }
+        style.height = this.progress.percent + '%'
+        style.width = this.progress.options.thickness
+        style.transition = "height " + this.progress.options.transition.speed + ", opacity " + this.progress.options.transition.opacity
+      }
+      return style
+    },
     progress() {
       if (inBrowser) {
         return window.VueProgressBarEventBus.RADON_LOADING_BAR
@@ -38,8 +55,14 @@ export default {
             show: false,
             color: 'rgb(19, 91, 55)',
             failedColor: 'red',
-            height: '2px',
-            autoRevert: true
+            thickness: '2px',
+            transition: {
+              speed: '0.2s',
+              opacity: '0.6s'
+            },
+            location: 'top',
+            autoRevert: true,
+            inverse: false
           }
         }
       }
