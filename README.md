@@ -1,17 +1,17 @@
 # vue-progressbar
 
 # Table of Contents
-* [___Demo___](https://github.com/XeonPowder/vue-progressbar#demo)
-* [___Requirements___](https://github.com/XeonPowder/vue-progressbar#requirements)
-* [___Installation___](https://github.com/XeonPowder/vue-progressbar#installation)
-* [___Usage___](https://github.com/XeonPowder/vue-progressbar#usage)  
+* [___Demo___](#demo)
+* [___Requirements___](#requirements)
+* [___Installation___](#installation)
+* [___Usage___](#usage)  
  * [___Constructor Options___](#constructor-options)
  * [___Implementation___](#implementation)
  * [___vue-router___](#vue-router)  
    * [___meta options___](#vue--router-meta-options)  
-* [___Methods___](https://github.com/XeonPowder/vue-progressbar#methods)
-* [___Examples___](https://github.com/XeonPowder/vue-progressbar#examples)
-* [___License___](https://github.com/XeonPowder/vue-progressbar#license)
+* [___Methods___](#methods)
+* [___Examples___](#examples)
+* [___License___](#license)
 
 # Demo
 [___Demo___](http://hilongjw.github.io/vue-progressbar/index.html)
@@ -58,7 +58,7 @@ new Vue({
 ```
 ## Constructor Options
 |key|description|defualt|options|
-|:--|--|--|
+|:---|---|---|---|
 | `color`|color of the progress bar|`'rgb(143, 255, 199)'`|`RGB` `HEX` `HSL` `HSV` `VEC`|
 |`failedColor`|color of the progress bar upon load fail|`'red'`|`RGB`, `HEX`, `HSL`, `HSV`, `VEC`
 |`thickness`|thickness of the progress bar|`'2px'`|`px`, `em`, `pt`, `%`, `vh`, `vw`|
@@ -134,7 +134,7 @@ export default [
 ### vue-router meta options
 
 |call|modifier|argument|example|
-|:--|--|--|--|
+|:---|---|---|---|
 |color|`set`, `temp`|`string`|`{call: 'color', modifier: 'temp', argument: '#ffb000'}`|
 |fail|`set`, `temp`|`string`|`{call: 'fail', modifier: 'temp', argument: '#ffb000'}`|
 |location|`set`, `temp`|`string`|`{call: 'location', modifier: 'temp', argument: 'top'}`|
@@ -142,7 +142,7 @@ export default [
 
 # Methods
 |function|description|parameters|example|
-|:--|--|--|--|
+|:---|---|---|---|
 |start|start the progress bar loading|`N/A`|`this.$Progress.start()`|
 |finish|finish the progress bar loading|`N/A`|`this.$Progress.finish()`|
 |fail|cause the progress bar to end and fail|`N/A`|`this.$Progress.fail()`|
