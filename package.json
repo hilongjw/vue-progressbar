@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hilongjw/vue-progressbar.git"
+    "url": "git+https://github.com/XeonPowder/vue-progressbar.git"
   },
   "keywords": [
     "vue",
@@ -17,10 +17,10 @@
     "vue progressbar",
     "progressbar"
   ],
-  "author": "Awe",
+  "author": "XeonPowder",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hilongjw/vue-progressbar/issues"
+    "url": "https://github.com/XeonPowder/vue-progressbar/issues"
   },
-  "homepage": "https://github.com/hilongjw/vue-progressbar#readme"
+  "homepage": "https://github.com/XeonPowder/vue-progressbar#readme"
 }
