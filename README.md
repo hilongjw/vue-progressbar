@@ -1,30 +1,44 @@
 # vue-progressbar
 
+Table of Contents
+* [___Demo___](https://github.com/XeonPowder/vue-progressbar#demo)
+* [___Requirements___](https://github.com/XeonPowder/vue-progressbar#requirements)
+* [___Installation___](https://github.com/XeonPowder/vue-progressbar#installation)
+* [___Usage___](https://github.com/XeonPowder/vue-progressbar#usage)
+* [___Methods___](https://github.com/XeonPowder/vue-progressbar#methods)
+* [___Examples___](https://github.com/XeonPowder/vue-progressbar#examples)
+* [___License___](https://github.com/XeonPowder/vue-progressbar#license)
+
 # Demo
-
-The demo page is [HERE](http://hilongjw.github.io/vue-progressbar/index.html).
-
+[___Demo___](http://hilongjw.github.io/vue-progressbar/index.html)
 # Requirements
-
-- [Vue.js](https://github.com/yyx990803/vue) `1.x` or `2.x`
+- [Vue.js](https://github.com/vuejs/vue) `1.x` or `2.x`  
 
 # Installation
-
-## npm
-
 ```shell
 $ npm install vue-progressbar
 ```
-
 # Usage
 
 main.js
 
 ```javascript
-
+import Vue from 'vue'
 import VueProgressBar from 'vue-progressbar'
+import App from './App'
 
-Vue.use(VueProgressBar, { options })
+const options = {
+  color: '#bffaf3',
+  failedColor: '#874b4b',
+  height: '5px',
+  autoRevert: true
+}
+
+Vue.use(VueProgressBar, options)
+
+new Vue({
+  ...App
+}).$mount('#app')
 
 ```
 possible `options` include:
@@ -171,7 +185,7 @@ export default [
   }
 ]
 ```
-Methods
+# Methods
 ```js
 //  start the progress bar loading
 this.$Progress.start()
@@ -212,8 +226,8 @@ this.$Progress.revertFailColor(color)
 //  cause the temporarily set progress and/or fail color to their previous colors
 this.$Progress.revert()
 ```
-
-Loading Data Example (vue-resource)
+# Examples
+Loading Data (vue-resource)
 ```html
 
 <script>
