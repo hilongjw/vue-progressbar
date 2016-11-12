@@ -36,16 +36,17 @@ import VueProgressBar from 'vue-progressbar'
 import App from './App'
 
 const options = {
+  autoRevert: true,
   color: '#bffaf3',
+  debug: true,
   failedColor: '#874b4b',
+  inverse: false,
+  location: 'top',
   thickness: '5px',
   transition: {
-    speed: '0.2s',
+    time: '0.7s',
     opacity: '0.6s'
-  },
-  autoRevert: true,
-  location: 'left',
-  inverse: false
+  }
 }
 
 Vue.use(VueProgressBar, options)
@@ -59,13 +60,14 @@ new Vue({
 ## Constructor Options
 |key|description|defualt|options|
 |:---|---|---|---|
-| `color`|color of the progress bar|`'rgb(143, 255, 199)'`|`RGB` `HEX` `HSL` `HSV` `VEC`|
-|`failedColor`|color of the progress bar upon load fail|`'red'`|`RGB`, `HEX`, `HSL`, `HSV`, `VEC`
-|`thickness`|thickness of the progress bar|`'2px'`|`px`, `em`, `pt`, `%`, `vh`, `vw`|
-|`transition`|transition speed/opacity of the progress bar|`{speed: '0.2s', opacity: '0.6s'}`|`speed`, `opacity`|
 |`autoRevert`|will temporary color changes automatically revert upon completion or fail|`true`|`true`, `false`|
-|`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
+|`color`|color of the progress bar|`'rgb(143, 255, 199)'`|`RGB`, `HEX`|
+|`debug`|output console errors|`false`|`true`, `false`|
+|`failedColor`|color of the progress bar upon load fail|`'red'`|`RGB`, `HEX`|
 |`inverse`|inverse the direction of the progress bar|`false`|`true`, `false`|
+|`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
+|`thickness`|thickness of the progress bar|`'2px'`|`px`, `em`, `pt`, `%`, `vh`, `vw`|
+|`transition`|transition speed/opacity of the progress bar|`{time: '0.2s', opacity: '0.6s'}`|`s`, `ms`|
 
 ## Implementation
 
@@ -91,22 +93,33 @@ export default {
     this.$Progress.start()
     //  hook the progress bar to start before we move router-view
     this.$router.beforeEach((to, from, next) => {
-      //  does the page we want to go to have a meta.progress object
-      if (to.meta.progress !== undefined) {
-        let meta = to.meta.progress
-        // parse meta tags
-        this.$Progress.parseMeta(meta)
+      //  do we need to quickly hide the current progress bar?
+      if (this.$Progress.quickHide()) {
+        //  yes, progress bar was hidden, lets wait 100ms then reroute
+        let this2 = this
+        setTimeout(() => {
+          this2.startReroute(to, from, next)
+        }, 100)
+      } else {
+        //  no, we can reroute
+        this.startReroute(to, from, next)
       }
-      //  start the progress bar
-      this.$Progress.start()
-      //  continue to next page
-      next()
     })
     //  hook the progress bar to finish after we've finished moving router-view
     this.$router.afterEach((to, from) => {
       //  finish the progress bar
       this.$Progress.finish()
     })
+  }
+  methods: {
+    startReroute (to, from, next) {
+      //  parse the meta if there is any
+      to.meta.progress !== undefined ? this.$Progress.parseMeta(to.meta.progress) : null
+      //  start the progress bar
+      this.$Progress.start()
+      //  go to next page
+      next()
+    }
   }
 }
 </script>
@@ -121,10 +134,12 @@ export default [
     meta: {
       progress: {
         func: [
-          {call: 'color', modifier: 'temp', argument: '#ffb000'},
+          {call: 'color', modifier: 'temp', argument: '#7000ff'},
           {call: 'fail', modifier: 'temp', argument: '#6e0000'},
           {call: 'location', modifier: 'temp', argument: 'top'},
-          {call: 'transition', modifier: 'temp', argument: {speed: '1.5s', opacity: '0.6s'}}
+          {call: 'transition', modifier: 'temp', argument: {time: '2.0s', opacity: '0.6s'}},
+          {call: 'inverse', modifier: 'temp', argument: true},
+          {call: 'thickness', modifier: 'temp', argument: '10px'}
         ]
       }
     }
@@ -137,34 +152,63 @@ export default [
 |:---|---|---|---|
 |color|`set`, `temp`|`string`|`{call: 'color', modifier: 'temp', argument: '#ffb000'}`|
 |fail|`set`, `temp`|`string`|`{call: 'fail', modifier: 'temp', argument: '#ffb000'}`|
+|inverse|`set`, `temp`|`boolean`|`{call: 'inverse', modifier: 'temp', argument: true}`|
 |location|`set`, `temp`|`string`|`{call: 'location', modifier: 'temp', argument: 'top'}`|
-|transition|`set`, `temp`|` object`|`{call: 'transition', modifier: 'temp', argument: {speed: '0.6s', opacity: '0.6s'}}`|
+|thickness|`set`, `temp`|`string`|`{call: 'thickness', modifier: 'temp', argument: '10px'}`|
+|transition|`set`, `temp`|`object`|`{call: 'transition', modifier: 'temp', argument: {time: '0.6s', opacity: '0.6s'}}`|
 
 # Methods
+|function|description|parameters|example|return|
+|:---|---|---|---|---|
+|decrease|decrease the progress bar by a certain %|`number: integer`|`this.$Progress.decrease(number)`|`N/A`|
+|fail|cause the progress bar to end and fail|`N/A`|`this.$Progress.fail()`|`N/A`|
+|finish|finish the progress bar loading|`N/A`|`this.$Progress.finish()`|`N/A`|
+|increase|increase the progress bar by a certain %|`number: integer`|`this.$Progress.increase(number)`|`N/A`|
+|parseMeta|parses progress meta data|`meta: object`|`this.$Progress.parseMeta(meta)`|`N/A`|
+|quickHide|quickly stops and hides the progress bar|`N/A`|`this.$Progress.quickHide()`|true|
+|revert|revert all temporary changes|`N/A`|`this.$Progress.revert()`|`N/A`|
+|set|set the progress bar %|`number: integer`|`this.$Progress.set(number)`|`N/A`|
+|start|start the progress bar loading|`N/A`|`this.$Progress.start()`|`N/A`|
+# Advanced Methods
 |function|description|parameters|example|
 |:---|---|---|---|
-|start|start the progress bar loading|`N/A`|`this.$Progress.start()`|
-|finish|finish the progress bar loading|`N/A`|`this.$Progress.finish()`|
-|fail|cause the progress bar to end and fail|`N/A`|`this.$Progress.fail()`|
-|increase|increase the progress bar by a certain %|`number: integer`|`this.$Progress.increase(number)`|
-|decrease|decrease the progress bar by a certain %|`number: integer`|`this.$Progress.decrease(number)`|
-|set|set the progress bar %|`number: integer`|`this.$Progress.set(number)`|
-|setFailColor|cause the fail color to permanently change|`color: string`|`this.$Progress.setFailColor(color)`|
-|setColor|cause the progress color to permanently change|`color: string`|`this.$Progress.setColor(color)`|
-|setLocation|cause the progress bar location to permanently change|`location: string`|`this.$Progress.setLocation(location)`|
-|setTransition|cause the progress bar transition speed/opacity to permanently change|`transition: object`|`this.$Progress.setTransition(transition)`|
-|tempFailColor|cause the fail color to change (temporarily)|`color: string`|`this.$Progress.tempFailColor(color)`|
-|tempColor|cause the progress color to change (temporarily)|`color: string`|`this.$Progress.tempColor(color)`|
-|tempLocation|cause the progress bar location to change (temporarily)|`location: string`|`this.$Progress.tempLocation(location)`|
-|tempTransition|cause the progress bar location to change (temporarily)|`transition: object`|`this.$Progress.tempTransition(transition)`|
-|revertColor|cause the temporarily set progress color to revert back to it's previous color|`N/A`|`this.$Progress.revertColor()`|
-|revertFailColor|cause the temporarily set fail color to revert back to it's previous color|`N/A`|`this.$Progress.revertFailColor()`|
-|revertTransition|cause the temporarily set transition to revert back to it's previous state|`N/A`|`this.$Progress.revertTransition()`|
-|revert|cause the temporarily set progress and/or fail color to their previous colors|`N/A`|`this.$Progress.revert()`|
-|parseMeta|parses progress meta data|`meta: object`|`this.$Progress.parseMeta(meta)`|
-
+|call|call function bus|`call: string`, `...args`|`this.$Progress.call('temp', 'color', '#ff00ff', true)`|
+|callSetTemp|sets call property (temporarily or permanently)|`property: string`, `value: dynamic`, `temp: boolean`|`this.$Progress.callSetTemp('color', '#ff00ff', true)`|
+|callRevert|reverts call property to default|`call: string`|`this.$Progress.callRevert('thickness')`|
+|callMeta|middleware function for parseMeta|`property: string`, `modifier: string`, `value: dynamic`|`this.$Progress.callMeta('color', 'temp', '#ff00ff')`|
 # Examples
-Loading Data (vue-resource)
+`call`
+```html
+<script>
+export default {
+  methods: {
+    example () {
+      this.$Progress.call('set', 'color', '#f0f0f0')
+      //  since 3rd argument is true, it will be set temporarily
+      this.$Progress.callSetTemp('color', '#120100', true)
+      //  4th argument is optional
+      //  since 4th argument is false, it will set `permanently` instead of `temporarily` even though 1st argument is `temp`
+      //  if the first argument is `temp` the default of the 4th argument is `true`, and `set` defaults to `false`
+      this.$Progress.call('temp', 'thickness', '20px', false)
+      //  this.$Progress.parseMeta loops over array of meta data
+      //  but you can call meta if you'd like
+      this.$Progress.call('meta', 'temp', 'thickness', '20px')
+      //  will set the temporary flag of inverse back to default
+      this.$Progress.callRevert('inverse')
+      //  functions below do the same thing
+      this.$Progress.callMeta('fail', 'set', '#ee0000')
+      this.$Progress.call('set', 'fail', '#ee0000')
+      this.$Progress.call('temp', 'fail', '#ee0000', false)
+      this.$Progress.callSetTemp('fail', '#ee0000', false)
+      //  after the progress bar finishes and disappears either naturally or forced by
+      this.$Progress.finish()
+      //  all temporary sets will be reverted to default IF `autoRevert` is set to true.
+    }
+  }
+}
+</script>
+```
+`(vue-resource)`
 ```html
 
 <script>

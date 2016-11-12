@@ -2,13 +2,15 @@
   "name": "vue-progressbar",
   "version": "0.5.3",
   "description": "A lightweight progress bar for vue",
-  "main": "vue-progressbar.es5.js",
+  "main": "dist/vue-progressbar.es5.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run copyfiles && npm run build:ugly",
+    "build:ugly": "uglifyjs dist/vue-progressbar.es5.js -cm --comments -o dist/vue-progressbar.es5.min.js",
+    "copyfiles": "copyfiles -f ./src/*.js ./src/*.vue dist"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/XeonPowder/vue-progressbar.git"
+    "url": "git+https://github.com/hilongjw/vue-progressbar.git"
   },
   "keywords": [
     "vue",
@@ -17,10 +19,20 @@
     "vue progressbar",
     "progressbar"
   ],
-  "author": "XeonPowder",
+  "author": [{
+    "name": "XeonPowder",
+    "email": "lmvdzd@gmail.com"
+  }, {
+    "name": "Awe",
+    "email": "hilongjw@qq.com"
+  }],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/XeonPowder/vue-progressbar/issues"
+    "url": "https://github.com/hilongjw/vue-progressbar/issues"
   },
-  "homepage": "https://github.com/XeonPowder/vue-progressbar#readme"
+  "homepage": "https://github.com/hilongjw/vue-progressbar#readme",
+  "dependencies": {
+    "copyfiles": "^1.0.0",
+    "uglify-js": "^2.7.4"
+  }
 }
