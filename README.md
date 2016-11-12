@@ -114,8 +114,19 @@ export default {
   }
   methods: {
     startReroute (to, from, next) {
+      //  uncomment to use vue-router meta style
       //  parse the meta if there is any
-      to.meta.progress !== undefined ? this.$Progress.parseMeta(to.meta.progress) : null
+      //  to.meta.progress !== undefined ? this.$Progress.parseMeta(to.meta.progress) : null
+
+      //  randomizes the style of the progress bar based on parameters
+      this.$Progress.randomize({
+        color: {r: {min: 0, max: 255}, g: {min: 0, max: 255}, b: {min: 0, max: 255}},
+        fail: {r: {min: 0, max: 255}, g: {min: 0, max: 255}, b: {min: 0, max: 255}},
+        thickness: {min: 3, max: 7, suffix: 'px'},
+        location: ['top', 'left'],
+        inverse: [true, false],
+        transition: {time: {min: 0.5, max: 1.75}, opacity: {min: 0.7, max: 1.4}}
+      })
       //  start the progress bar
       this.$Progress.start()
       //  go to next page
@@ -170,6 +181,7 @@ export default [
 |revert|revert all temporary changes|`N/A`|`this.$Progress.revert()`|`N/A`|
 |set|set the progress bar %|`number: integer`|`this.$Progress.set(number)`|`N/A`|
 |start|start the progress bar loading|`N/A`|`this.$Progress.start()`|`N/A`|
+|randomize|randomize the progress bar style based on parameters|`style: object`|[this.$Progress.randomize(randomizedTemplate)](#examples)|`N/A`|
 # Advanced Methods
 |function|description|parameters|example|
 |:---|---|---|---|
@@ -178,6 +190,34 @@ export default [
 |callRevert|reverts call property to default|`call: string`|`this.$Progress.callRevert('thickness')`|
 |callMeta|middleware function for parseMeta|`property: string`, `modifier: string`, `value: dynamic`|`this.$Progress.callMeta('color', 'temp', '#ff00ff')`|
 # Examples
+`randomize`
+```html
+<script>
+export default {
+  methods: {
+    randomizeBar () {
+      // any key left out will be automatically randomized by default parameters
+      // defaults:
+      //  color: rgb([0-255], [0-255], [0-255])
+      //  fail: rgb([0-255], [0-255], [0-255])
+      //  thickness: [2-7]px
+      //  location: ['top', 'left', 'right', 'bottom']
+      //  inverse: [true, false]
+      //  transition: [0.50-1.50]s
+      randomTemplate = {
+        color: {r: {max: 50}, g: {min: 50, max: 100}}, //   rgb([0-50], [50-100], [0-255])
+        fail: {r: {min: 11}, g: {min: 0, max: 255}, b: {min: 0, max: 255}}, //  rgb([11-255], [0-255], [0-255])
+        thickness: {min: 3, max: 7, suffix: 'px'}, //   [3-7]px
+        location: ['top', 'left'], //   ['top' or 'left']
+        inverse: [true], // always inversed
+        transition: {time: {min: 0.5, max: 1.75}, opacity: {min: 0.7, max: 1.4}} // time: [0.5-1.75]s, opacity: [0.7-1.4]s
+      }
+      this.$Progress.randomize(randomTemplate)
+    }
+  }
+}
+</script>
+```
 `call`
 ```html
 <script>

@@ -4,10 +4,106 @@ var _vueProgressbar = require('./vue-progressbar.vue');
 
 var _vueProgressbar2 = _interopRequireDefault(_vueProgressbar);
 
-const regexColor = new RegExp("(^#[0-9a-fA-F]{6}$)|(^#[0-9a-fA-F]{3}$)|(^rgb([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3})$)");
+const regexColor = new RegExp("(^#[0-9a-fA-F]{6}$)|(^#[0-9a-fA-F]{3}$)|(^rgb\\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}\\)$)");
 const regexLocation = new RegExp("(left|right|top|bottom)");
 const regexTime = new RegExp("(\\d+\\.\\d+)(s|ms)|(\\.\\d+)(s|ms)|(\\d+)(s|ms)");
 const regexThickness = new RegExp("(\\d+\\.\\d+)(px|em|pt|%|vh|vw)|(\\.\\d+)(px|em|pt|%|vh|vw)|(\\d+)(px|em|pt|%|vh|vw)");
+
+var getRandomIntInclusive = function(min, max) {
+  min = Math.floor(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+var getRandomColor = function(color) {
+  var r = {min: 255, max: 255}, g = {min: 255, max: 255}, b = {min: 255, max: 255};
+  if (color !== undefined) {
+    if (color.r !== undefined) {
+      color.r.min !== undefined ? r.min = color.r.min : null;
+      color.r.max !== undefined ? r.max = color.r.max : null;
+    }
+    if (color.g !== undefined) {
+      color.g.min !== undefined ? g.min = color.g.min : null;
+      color.g.max !== undefined ? g.max = color.g.max : null;
+    }
+    if (color.b !== undefined) {
+      color.b.min !== undefined ? b.min = color.b.min : null;
+      color.b.max !== undefined ? b.max = color.b.max : null;
+    }
+  }
+  return 'rgb('+getRandomIntInclusive(r.min, r.max)+', '+getRandomIntInclusive(g.min, g.max)+', '+getRandomIntInclusive(b.min, b.max)+')';
+}
+var getRandomThickness = function(thickness) {
+  var min = 2, max = 7, suffix = 'px';
+  if (thickness !== undefined) {
+    thickness.min !== undefined ? min = thickness.min : null;
+    thickness.max !== undefined ? max = thickness.max : null;
+    thickness.suffix !== undefined ? suffix = thickness.suffix : null;
+  }
+  return getRandomIntInclusive(min, max)+suffix;
+}
+var getRandomTransition = function(transition) {
+  var timeDec, opacityDec, timeInt, opacityInt, x;
+  if (transition !== undefined) {
+    if (transition.time.min !== undefined && transition.time.max !== undefined) {
+      if (transition.time.min % 1 === 0 || transition.time.max % 1 === 0) {
+        timeDec = 0;
+      } else {
+        timeDec = getRandomIntInclusive(Math.floor((transition.time.min % 1)*100), Math.floor((transition.time.max % 1)*100));
+      }
+      timeInt = getRandomIntInclusive(transition.time.min, transition.time.max);
+    } else {
+      timeInt = getRandomIntInclusive(0, 1);
+      timeInt < 1 ? timeDec = getRandomIntInclusive(50, 99) : timeDec = getRandomIntInclusive(0, 50);
+    }
+    if (transition.opacity.min !== undefined && transition.opacity.max !== undefined) {
+      if (transition.opacity.min % 1 === 0 || transition.opacity.max % 1 === 0) {
+        opacityDec = 0;
+      } else {
+        opacityDec = getRandomIntInclusive(Math.floor((transition.opacity.min % 1)*100), Math.floor((transition.opacity.max % 1)*100));
+      }
+      opacityInt = getRandomIntInclusive(transition.opacity.min, transition.opacity.max);
+    } else {
+      opacityInt = getRandomIntInclusive(0, 1);
+      opacityInt < 1 ? opacityDec = getRandomIntInclusive(50, 99) : opacityDec = getRandomIntInclusive(0, 50);
+    }
+  } else {
+    timeInt = getRandomIntInclusive(0, 1);
+    opacityInt = getRandomIntInclusive(0, 1);
+    timeInt < 1 ? timeDec = getRandomIntInclusive(50, 99) : timeDec = getRandomIntInclusive(0, 50);
+    opacityInt < 1 ? opacityDec = getRandomIntInclusive(50, 99) : opacityDec = getRandomIntInclusive(0, 50);
+  }
+  x = {time: timeInt+'.'+timeDec+'s', opacity: opacityInt+'.'+opacityDec+'s'};
+  return x;
+}
+var getRandomLocation = function(location) {
+  if (location !== undefined) {
+    return location[getRandomIntInclusive(0, location.length-1)]
+  } else {
+    switch(getRandomIntInclusive(0, 3)) {
+      case 0:
+        return 'top';
+      case 1:
+        return 'bottom';
+      case 2:
+        return 'left';
+      case 3:
+        return 'right';
+    }
+  }
+}
+var getRandomInverse = function(inverse) {
+  if (inverse !== undefined) {
+    return inverse[getRandomIntInclusive(0, inverse.length-1)];
+  } else {
+    switch(getRandomIntInclusive(0, 1)) {
+      case 0:
+        return false;
+      case 1:
+        return true;
+    }
+  }
+}
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
@@ -158,7 +254,6 @@ module.exports.install = function(Vue) {
         inverse: this.$root.RADON_LOADING_BAR.options.inverse,
         transition: this.$root.RADON_LOADING_BAR.options.transition
       };
-      this.log('reverted.');
     },
     quickHide: function quickHide() {
       this.$root.RADON_LOADING_BAR.quickHide = true;
@@ -294,6 +389,26 @@ module.exports.install = function(Vue) {
       for (var x in meta.func) {
         this.call('meta', meta.func[x].call, meta.func[x].modifier, meta.func[x].argument);
       }
+    },
+    randomize: function randomize(meta) {
+      var data = { color: null, fail: null, thickness: null, location: null, inverse: null, transition: null};
+      (meta !== undefined && meta.color !== undefined) ? data.color = getRandomColor(meta.color) : data.color = getRandomColor();
+      (meta !== undefined && meta.fail !== undefined) ? data.fail = getRandomColor(meta.fail) : data.fail = getRandomColor();
+      (meta !== undefined && meta.thickness !== undefined) ? data.thickness = getRandomThickness(meta.thickness) : data.thickness = getRandomThickness();
+      (meta !== undefined && meta.location !== undefined) ? data.location = getRandomLocation(meta.location) : data.location = getRandomLocation() ;
+      (meta !== undefined && meta.inverse !== undefined) ? data.inverse = getRandomInverse(meta.inverse) : data.inverse = getRandomInverse();
+      (meta !== undefined && meta.transition !== undefined) ? data.transition = getRandomTransition(meta.transition) : data.transition = getRandomTransition();
+      var unparsed = {
+        func: [
+          {call: 'color', modifier: 'temp', argument: data.color},
+          {call: 'fail', modifier: 'temp', argument: data.fail},
+          {call: 'thickness', modifier: 'temp', argument: data.thickness},
+          {call: 'location', modifier: 'temp', argument: data.location},
+          {call: 'inverse', modifier: 'temp', argument: data.inverse},
+          {call: 'transition', modifier: 'temp', argument: data.transition}
+        ]
+      };
+      this.parseMeta(unparsed);
     }
   };
   var VueProgressBarEventBus = new Vue({
