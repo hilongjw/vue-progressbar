@@ -10,6 +10,7 @@
  * [___vue-router___](#vue-router)  
    * [___meta options___](#vue--router-meta-options)  
 * [___Methods___](#methods)
+* [___Advanced Methods___](#advanced-methods)
 * [___Examples___](#examples)
 * [___License___](#license)
 
@@ -187,7 +188,8 @@ export default {
       //  since 3rd argument is true, it will be set temporarily
       this.$Progress.callSetTemp('color', '#120100', true)
       //  4th argument is optional
-      //  since 4th argument is false, it will set `permanently` instead of `temporarily` even though 1st argument is `temp`
+      //  since 4th argument is false, it will set `permanently` instead of `temporarily`
+      //  even though 1st argument is `temp`
       //  if the first argument is `temp` the default of the 4th argument is `true`, and `set` defaults to `false`
       this.$Progress.call('temp', 'thickness', '20px', false)
       //  this.$Progress.parseMeta loops over array of meta data
@@ -208,7 +210,7 @@ export default {
 }
 </script>
 ```
-`(vue-resource)`
+`vue-resource`
 ```html
 
 <script>
