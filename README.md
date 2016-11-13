@@ -26,8 +26,23 @@
 # npm
 $ npm install vue-progressbar
 
-#yarn
+# yarn
 $ yarn vue-progressbar
+```
+## Build from source
+```
+# git
+cd /directory/to/clone/to
+git clone https://github.com/hilongjw/vue-progressbar.git
+
+cd vue-progressbar
+
+# npm or yarn
+npm install | yarn install
+
+# build with npm or yarn
+[npm|yarn] run build
+
 ```
 # Usage
 

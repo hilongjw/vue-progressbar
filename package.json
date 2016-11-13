@@ -1,11 +1,11 @@
 {
   "name": "vue-progressbar",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "A lightweight progress bar for vue",
   "main": "dist/vue-progressbar.es5.min.js",
   "scripts": {
     "build": "npm run copyfiles && npm run build:ugly",
-    "build:ugly": "uglifyjs dist/vue-progressbar.es5.js -cm --comments -o dist/vue-progressbar.es5.min.js",
+    "build:ugly": "uglifyjs dist/vue-progressbar.es5.js -cm --comments -o dist/vue-progressbar.es5.min.js --source-map dist/vue-progressbar.es5.js.map",
     "copyfiles": "copyfiles -f ./src/*.js ./src/*.vue dist"
   },
   "repository": {
