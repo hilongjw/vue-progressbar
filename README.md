@@ -5,17 +5,19 @@
 * [___Requirements___](#requirements)
 * [___Installation___](#installation)
 * [___Usage___](#usage)  
- * [___Constructor Options___](#constructor-options)
- * [___Implementation___](#implementation)
- * [___vue-router___](#vue-router)  
-   * [___meta options___](#vue--router-meta-options)  
+ * [_Constructor Options_](#constructor-options)
+ * [_Implementation_](#implementation)
+ * [_vue-router_](#vue-router)  
+   * [_meta options_](#vue--router-meta-options)  
 * [___Methods___](#methods)
 * [___Advanced Methods___](#advanced-methods)
 * [___Examples___](#examples)
 * [___License___](#license)
 
 # Demo
-[___Demo___](http://hilongjw.github.io/vue-progressbar/index.html)
+* [__Demo__](http://hilongjw.github.io/vue-progressbar/index.html)  
+* [__Trailing Progress Bar + Randomizer__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-13_04-29-03.mp4)  
+* [__vue-router meta progress bar__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-13_04-30-24.mp4)  
 # Requirements
 - [Vue.js](https://github.com/vuejs/vue) `1.x` or `2.x`  
 
@@ -69,7 +71,7 @@ new Vue({
 |`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
 |`thickness`|thickness of the progress bar|`'2px'`|`px`, `em`, `pt`, `%`, `vh`, `vw`|
 |`transition`|transition speed/opacity of the progress bar|`{time: '0.2s', opacity: '0.6s'}`|`s`, `ms`|
-
+|`trail`|change the type of progress bar to a trailing bar|`'-1px'`|`px`|
 ## Implementation
 
 App.vue
@@ -125,7 +127,8 @@ export default {
         thickness: {min: 3, max: 7, suffix: 'px'},
         location: ['top', 'left'],
         inverse: [true, false],
-        transition: {time: {min: 0.5, max: 1.75}, opacity: {min: 0.7, max: 1.4}}
+        transition: {time: {min: 0.5, max: 1.75}, opacity: {min: 0.7, max: 1.4}},
+        trail: {min: 50, max: 100, suffix: 'px'}
       })
       //  start the progress bar
       this.$Progress.start()
@@ -152,6 +155,7 @@ export default [
           {call: 'transition', modifier: 'temp', argument: {time: '2.0s', opacity: '0.6s'}},
           {call: 'inverse', modifier: 'temp', argument: true},
           {call: 'thickness', modifier: 'temp', argument: '10px'}
+          {call: 'trail', modifier: 'temp', argument: '50px'}
         ]
       }
     }
@@ -168,7 +172,7 @@ export default [
 |location|`set`, `temp`|`string`|`{call: 'location', modifier: 'temp', argument: 'top'}`|
 |thickness|`set`, `temp`|`string`|`{call: 'thickness', modifier: 'temp', argument: '10px'}`|
 |transition|`set`, `temp`|`object`|`{call: 'transition', modifier: 'temp', argument: {time: '0.6s', opacity: '0.6s'}}`|
-
+|trail|`set`, `temp`|`string`|`{call: 'trail', modifier: 'temp', argument: '100px'}`|
 # Methods
 |function|description|parameters|example|return|
 |:---|---|---|---|---|
@@ -181,7 +185,7 @@ export default [
 |revert|revert all temporary changes|`N/A`|`this.$Progress.revert()`|`N/A`|
 |set|set the progress bar %|`number: integer`|`this.$Progress.set(number)`|`N/A`|
 |start|start the progress bar loading|`N/A`|`this.$Progress.start()`|`N/A`|
-|randomize|randomize the progress bar style based on parameters|`style: object`|[this.$Progress.randomize(randomizedTemplate)](#examples)|`N/A`|
+|randomize|randomize the progress bar style based on parameters|`style: object`|[`this.$Progress.randomize(randomizedTemplate)`](#examples)|`N/A`|
 # Advanced Methods
 |function|description|parameters|example|
 |:---|---|---|---|
@@ -204,6 +208,7 @@ export default {
       //  location: ['top', 'left', 'right', 'bottom']
       //  inverse: [true, false]
       //  transition: [0.50-1.50]s
+      //  trail: [50-100]px
       randomTemplate = {
         color: {r: {max: 50}, g: {min: 50, max: 100}}, //   rgb([0-50], [50-100], [0-255])
         fail: {r: {min: 11}, g: {min: 0, max: 255}, b: {min: 0, max: 255}}, //  rgb([11-255], [0-255], [0-255])
@@ -211,6 +216,7 @@ export default {
         location: ['top', 'left'], //   ['top' or 'left']
         inverse: [true], // always inversed
         transition: {time: {min: 0.5, max: 1.75}, opacity: {min: 0.7, max: 1.4}} // time: [0.5-1.75]s, opacity: [0.7-1.4]s
+        trail: {min: 20} // min: 20, max: 100, suffix: px
       }
       this.$Progress.randomize(randomTemplate)
     }
