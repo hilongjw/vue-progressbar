@@ -8,15 +8,15 @@ const regexColor = new RegExp("(^#[0-9a-fA-F]{6}$)|(^#[0-9a-fA-F]{3}$)|(^rgb\\([
 const regexLocation = new RegExp("(left|right|top|bottom)");
 const regexTime = new RegExp("(\\d+\\.\\d+)(s|ms)|(\\.\\d+)(s|ms)|(\\d+)(s|ms)");
 const regexThickness = new RegExp("(\\d+\\.\\d+)(px|em|pt|%|vh|vw)|(\\.\\d+)(px|em|pt|%|vh|vw)|(\\d+)(px|em|pt|%|vh|vw)");
+const regexTrail = new RegExp("(\\d+\\.\\d+)(px|em|pt|%|vh|vw)|(\\.\\d+)(px|em|pt|%|vh|vw)|(\\d+)(px|em|pt|%|vh|vw)");
 
 var getRandomIntInclusive = function(min, max) {
   min = Math.floor(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 var getRandomColor = function(color) {
-  var r = {min: 255, max: 255}, g = {min: 255, max: 255}, b = {min: 255, max: 255};
+  var r = {min: 0, max: 255}, g = {min: 0, max: 255}, b = {min: 0, max: 255};
   if (color !== undefined) {
     if (color.r !== undefined) {
       color.r.min !== undefined ? r.min = color.r.min : null;
@@ -39,6 +39,15 @@ var getRandomThickness = function(thickness) {
     thickness.min !== undefined ? min = thickness.min : null;
     thickness.max !== undefined ? max = thickness.max : null;
     thickness.suffix !== undefined ? suffix = thickness.suffix : null;
+  }
+  return getRandomIntInclusive(min, max)+suffix;
+}
+var getRandomTrail = function(trail) {
+  var min = 50, max = 100, suffix = 'px';
+  if (trail !== undefined) {
+    trail.min !== undefined ? min = trail.min : null;
+    trail.max !== undefined ? max = trail.max : null;
+    trail.suffix !== undefined ? suffix = trail.suffix : null;
   }
   return getRandomIntInclusive(min, max)+suffix;
 }
@@ -180,7 +189,7 @@ module.exports.install = function(Vue) {
         this.$root.RADON_LOADING_BAR.options.failedColor = color;
       }
     },
-    h_setColor: function h_setFailColor(color, temp) {
+    h_setColor: function h_setColor(color, temp) {
       if (temp) {
         this.$root.RADON_LOADING_BAR.temp.color = color;
         !this.$root.RADON_LOADING_BAR.temp.use ? this.$root.RADON_LOADING_BAR.temp.use = true : null;
@@ -188,7 +197,7 @@ module.exports.install = function(Vue) {
         this.$root.RADON_LOADING_BAR.options.color = color;
       }
     },
-    h_setLocation: function h_setFailColor(loc, temp) {
+    h_setLocation: function h_setLocation(loc, temp) {
       if (temp) {
         this.$root.RADON_LOADING_BAR.temp.location = loc;
         !this.$root.RADON_LOADING_BAR.temp.use ? this.$root.RADON_LOADING_BAR.temp.use = true : null;
@@ -196,7 +205,7 @@ module.exports.install = function(Vue) {
         this.$root.RADON_LOADING_BAR.options.location = loc;
       }
     },
-    h_setTransition: function h_setFailColor(transition, temp) {
+    h_setTransition: function h_setTransition(transition, temp) {
       if (temp) {
         this.$root.RADON_LOADING_BAR.temp.transition = transition;
         !this.$root.RADON_LOADING_BAR.temp.use ? this.$root.RADON_LOADING_BAR.temp.use = true : null;
@@ -204,7 +213,7 @@ module.exports.install = function(Vue) {
         this.$root.RADON_LOADING_BAR.options.transition = transition;
       }
     },
-    h_setInverse: function h_setFailColor(inverse, temp) {
+    h_setInverse: function h_setInverse(inverse, temp) {
       if (temp) {
         this.$root.RADON_LOADING_BAR.temp.inverse = inverse;
         !this.$root.RADON_LOADING_BAR.temp.use ? this.$root.RADON_LOADING_BAR.temp.use = true : null;
@@ -212,12 +221,20 @@ module.exports.install = function(Vue) {
         this.$root.RADON_LOADING_BAR.options.inverse = inverse;
       }
     },
-    h_setThickness: function h_setFailColor(thickness, temp) {
+    h_setThickness: function h_setThickness(thickness, temp) {
       if (temp) {
         this.$root.RADON_LOADING_BAR.temp.thickness = thickness;
         !this.$root.RADON_LOADING_BAR.temp.use ? this.$root.RADON_LOADING_BAR.temp.use = true : null;
       } else {
         this.$root.RADON_LOADING_BAR.options.thickness = thickness;
+      }
+    },
+    h_setTrail: function h_setTrail(trail, temp) {
+      if (temp) {
+        this.$root.RADON_LOADING_BAR.temp.trail = trail;
+        !this.$root.RADON_LOADING_BAR.temp.use ? this.$root.RADON_LOADING_BAR.temp.use = true : null;
+      } else {
+        this.$root.RADON_LOADING_BAR.options.trail = trail;
       }
     },
     //  get functions
@@ -252,10 +269,12 @@ module.exports.install = function(Vue) {
         autoRevert: this.$root.RADON_LOADING_BAR.options.autoRevert,
         location: this.$root.RADON_LOADING_BAR.options.location,
         inverse: this.$root.RADON_LOADING_BAR.options.inverse,
-        transition: this.$root.RADON_LOADING_BAR.options.transition
+        transition: this.$root.RADON_LOADING_BAR.options.transition,
+        trail: this.$root.RADON_LOADING_BAR.options.trail
       };
     },
     quickHide: function quickHide() {
+      if (this.$root.RADON_LOADING_BAR.hidden) return false;
       this.$root.RADON_LOADING_BAR.quickHide = true;
       this.$root.RADON_LOADING_BAR.percent = 0;
       clearInterval(this.state.timer);
@@ -312,6 +331,8 @@ module.exports.install = function(Vue) {
         this.call('set', 'inverse', args[2], temp);
       } else if (args[0] === 'thickness') {
         this.call('set', 'thickness', args[2], temp);
+      } else if (args[0] === 'trail') {
+        this.call('set', 'trail', args[2], temp);
       }
     },
     callSetTemp: function callSetTemp() {
@@ -335,6 +356,8 @@ module.exports.install = function(Vue) {
         typeof args[1] === 'boolean' ? this.h_setInverse(args[1], args[2]) : this.log('invalid inverse: \"' + args[1] + '\"');
       } else if (args[0] === 'thickness') {
         this.validThickness(args[1]) ? this.h_setThickness(args[1], args[2]) : this.log('invalid thickness: \"' + args[1] + '\"');
+      } else if (args[0] === 'trail') {
+        this.validTrail(args[1]) ? this.h_setTrail(args[1], args[2]) : this.log('invalid trail: \"' + args[1] + '\"');
       }
     },
     callRevert: function callRevert(revert) {
@@ -350,6 +373,8 @@ module.exports.install = function(Vue) {
         this.h_setInverse(this.$root.RADON_LOADING_BAR.options.inverse, true);
       } else if (revert === 'thickness') {
         this.h_setThickness(this.$root.RADON_LOADING_BAR.options.thickness, true);
+      } else if (revert === 'trail') {
+        this.h_setTrail(this.$root.RADON_LOADING_BAR.options.trail, true);
       }
     },
     call: function call() {
@@ -385,6 +410,9 @@ module.exports.install = function(Vue) {
     validThickness: function validThickness(thickness) {
       return regexThickness.test(thickness);
     },
+    validTrail: function validTrail(trail) {
+      return regexTrail.test(trail);
+    },
     parseMeta: function parseMeta(meta) {
       for (var x in meta.func) {
         this.call('meta', meta.func[x].call, meta.func[x].modifier, meta.func[x].argument);
@@ -398,6 +426,7 @@ module.exports.install = function(Vue) {
       (meta !== undefined && meta.location !== undefined) ? data.location = getRandomLocation(meta.location) : data.location = getRandomLocation() ;
       (meta !== undefined && meta.inverse !== undefined) ? data.inverse = getRandomInverse(meta.inverse) : data.inverse = getRandomInverse();
       (meta !== undefined && meta.transition !== undefined) ? data.transition = getRandomTransition(meta.transition) : data.transition = getRandomTransition();
+      (meta !== undefined && meta.trail !== undefined) ? data.trail = getRandomTrail(meta.trail) : data.trail = getRandomTrail();
       var unparsed = {
         func: [
           {call: 'color', modifier: 'temp', argument: data.color},
@@ -405,9 +434,11 @@ module.exports.install = function(Vue) {
           {call: 'thickness', modifier: 'temp', argument: data.thickness},
           {call: 'location', modifier: 'temp', argument: data.location},
           {call: 'inverse', modifier: 'temp', argument: data.inverse},
-          {call: 'transition', modifier: 'temp', argument: data.transition}
+          {call: 'transition', modifier: 'temp', argument: data.transition},
+          {call: 'trail', modifier: 'temp', argument: data.trail}
         ]
       };
+      this.log(unparsed);
       this.parseMeta(unparsed);
     }
   };
@@ -417,6 +448,7 @@ module.exports.install = function(Vue) {
         percent: 0,
         hidden: true,
         quickHide: false,
+        setupInverse: false,
         temp: {
           use: false,
           autoRevert: true,
@@ -428,6 +460,7 @@ module.exports.install = function(Vue) {
           location: 'top',
           show: false,
           thickness: '2px',
+          trail: '-1px',
           transition: {
             time: '0.2s',
             opacity: '0.6s'
@@ -443,6 +476,7 @@ module.exports.install = function(Vue) {
           location: options.location || 'top',
           show: false,
           thickness: options.thickness || '2px',
+          trail: options.trail || '-1px',
           transition: options.transition || {
             time: '0.2s',
             opacity: '0.6s'
