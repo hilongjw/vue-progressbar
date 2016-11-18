@@ -1,23 +1,26 @@
 # vue-progressbar
 
 # Table of Contents
-* [___Demo___](#demo)
-* [___Requirements___](#requirements)
-* [___Installation___](#installation)
+* [___Demo___](#demo)  
+* [___Requirements___](#requirements)  
+* [___Installation___](#installation)  
 * [___Usage___](#usage)  
- * [_Constructor Options_](#constructor-options)
- * [_Implementation_](#implementation)
- * [_vue-router_](#vue-router)  
-   * [_meta options_](#vue--router-meta-options)  
-* [___Methods___](#methods)
-* [___Advanced Methods___](#advanced-methods)
-* [___Examples___](#examples)
-* [___License___](#license)
+  * [_Constructor Options_](#constructor-options)  
+  * [_Implementation_](#implementation)  
+  * [_vue-router_](#vue-router)  
+    * [_meta/modify options_](#vue-router-metamodify-options)  
+* [___Methods___](#methods)  
+* [___Examples___](#examples)  
+  * [_vue-resource example_](#vue-resource)  
+* [___License___](#license)  
 
 # Demo
-* [__Demo__](http://hilongjw.github.io/vue-progressbar/index.html)  
-* [__Trailing Progress Bar + Randomizer__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-13_04-29-03.mp4)  
-* [__vue-router meta progress bar__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-13_04-30-24.mp4)  
+* [__Demo (not updated yet with newest features)__](http://hilongjw.github.io/vue-progressbar/index.html)  
+* [__Trailing progress bar + randomizer__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-13_04-29-03.mp4)  
+* [__Vue-router meta progress bar__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-13_04-30-24.mp4)  
+* [__Multi progress bar support__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-14_03-16-45.mp4)
+* [__Gradient support__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-18_12-58-06.mp4)
+
 # Requirements
 - [Vue.js](https://github.com/vuejs/vue) `1.x` or `2.x`  
 
@@ -54,17 +57,24 @@ import VueProgressBar from 'vue-progressbar'
 import App from './App'
 
 const options = {
-  autoRevert: true,
-  color: '#bffaf3',
   debug: true,
+  color: '#bffaf3',
   failedColor: '#874b4b',
-  inverse: false,
-  location: 'top',
   thickness: '5px',
   transition: {
     time: '0.7s',
-    opacity: '0.6s'
-  }
+    opacity: '1.6s'
+  },
+  trail: '-1px',
+  autoRevert: true,
+  location: 'top',
+  inverse: false,
+  gradient: {
+    use: true,
+    gradient: 'predefined'
+  },
+  init: true,
+  bounce: true
 }
 
 Vue.use(VueProgressBar, options)
@@ -72,9 +82,8 @@ Vue.use(VueProgressBar, options)
 new Vue({
   ...App
 }).$mount('#app')
-
-
 ```
+
 ## Constructor Options
 |key|description|defualt|options|
 |:---|---|---|---|
@@ -86,7 +95,10 @@ new Vue({
 |`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
 |`thickness`|thickness of the progress bar|`'2px'`|`px`, `em`, `pt`, `%`, `vh`, `vw`|
 |`transition`|transition speed/opacity of the progress bar|`{time: '0.2s', opacity: '0.6s'}`|`s`, `ms`|
-|`trail`|change the type of progress bar to a trailing bar|`'-1px'`|`px`|
+|`trail`|change the type of progress bar, trailing or not|`'-1px'`|`px`|
+|`bounce`|change the bounce type of the progress bar|`true`|`true`, `false`|
+|`gradient`|should the progress bar use a gradient|`{use: true, gradient: '-linear-gradient(to top, #000fff, #0f0f0f)'}`|use: [`true`, `false`], gradient: [`'predefined'`, `'-linear-gradient(to [top, left], [RGB, HEX], [RGB, HEX]'`]|
+|`init`|when a progress bar is created should it be initialized with data|`true`|`true`, `false`|
 ## Implementation
 
 App.vue
@@ -95,59 +107,80 @@ App.vue
     <div id="app">
         <!-- for example router view -->
         <router-view></router-view>
-        <!-- set progressbar -->
-        <vue-progress-bar></vue-progress-bar>
+        <!-- setup progressbar -->
+        <!-- automatically added to $pb -->
+        <!-- required: show - should the progress bar be able to be displayed -->
+        <!-- required: reference - name of this specific progress bar -->
+        <!-- optional: options - can be passed custom constructor options -->
+        <vue-progress-bar :options="options" :show="true" reference="router"></vue-progress-bar>
     </div>
 </template>
 
 <script>
 export default {
   mounted () {
-    //  [App.vue specific] When App.vue is finish loading finish the progress bar
-    this.$Progress.finish()
+    //  [App.vue specific] Start the bar and finish it on first load
+    this.$pb.start('router')
+    let this2 = this
+    setTimeout(() => {
+      this2.$pb.finish('router')
+    }, 400) // 400 is a good number, anything less and the bars will not work nicely.
   },
   created () {
-    //  [App.vue specific] When App.vue is first loaded start the progress bar
-    this.$Progress.start()
-    //  hook the progress bar to start before we move router-view
+    //  using vue-router before each page change
     this.$router.beforeEach((to, from, next) => {
-      //  do we need to quickly hide the current progress bar?
-      if (this.$Progress.quickHide()) {
-        //  yes, progress bar was hidden, lets wait 100ms then reroute
-        let this2 = this
-        setTimeout(() => {
-          this2.startReroute(to, from, next)
-        }, 100)
-      } else {
-        //  no, we can reroute
-        this.startReroute(to, from, next)
-      }
+      this.startReroute(to, from, next)
     })
     //  hook the progress bar to finish after we've finished moving router-view
     this.$router.afterEach((to, from) => {
-      //  finish the progress bar
-      this.$Progress.finish()
+      //  finish the `router` progress bar
+      let this2 = this
+      setTimeout(() => {
+        this2.$pb.finish('router')
+      }, 400) // 400 is a good number, anything less and the bars will not work nicely.
     })
   }
   methods: {
     startReroute (to, from, next) {
-      //  uncomment to use vue-router meta style
-      //  parse the meta if there is any
-      //  to.meta.progress !== undefined ? this.$Progress.parseMeta(to.meta.progress) : null
-
-      //  randomizes the style of the progress bar based on parameters
-      this.$Progress.randomize({
-        color: {r: {min: 0, max: 255}, g: {min: 0, max: 255}, b: {min: 0, max: 255}},
-        fail: {r: {min: 0, max: 255}, g: {min: 0, max: 255}, b: {min: 0, max: 255}},
-        thickness: {min: 3, max: 7, suffix: 'px'},
-        location: ['top', 'left'],
+      //  vue-router meta style
+      this.$pb.start('router', to.meta.progress, 'meta')
+      //
+      //  randomize style
+      let random = {
+        color: { r: {min: 0, max: 255}, g: {min: 0, max: 255}, b: {min: 0, max: 255} },
+        fail: { r: {min: 250, max: 255}, g: {min: 0, max: 0}, b: {min: 100, max: 150} },
+        thickness: { min: 10, max: 20, suffix: 'px' },
+        trail: { min: 20, max: 50, suffix: 'px' },
+        transition: {
+          time: { min: 0.5, max: 1.75 },
+          opacity: { min: 0.7, max: 1.4 }
+        },
+        location: ['top', 'bottom', 'left'],
         inverse: [true, false],
-        transition: {time: {min: 0.5, max: 1.75}, opacity: {min: 0.7, max: 1.4}},
-        trail: {min: 50, max: 100, suffix: 'px'}
-      })
-      //  start the progress bar
-      this.$Progress.start()
-      //  go to next page
+        bounce: [true, false],
+        gradient: { 
+          use: [true, false],
+          gradient: {
+            from: { r: {min: 0, max: 255}, g: {min: 0, max: 255}, b: {min: 0, max: 255} },
+            to: { r: {min: 0, max: 255}, g: {min: 0, max: 255}, b: {min: 0, max: 255} }
+          }
+        }
+      }
+      this.$pb.start('router', random, 'randomize')
+      //// or
+      this.$pb.randomize('router', random)
+      this.$pb.start('router')
+      //// or
+      this.$pb.start('router', {trail: {min: -1, max: -1}}, 'randomize')      
+      //
+      //  modify style
+      this.$pb.modify('router', {call: 'inverse', modifier: 'set', argument: true})
+      this.$pb.start('router')
+      //// or 
+      this.$pb.modify('router', [{call: 'inverse', modifier: 'set', argument: true}, {call...}])
+      this.$pb.start('router')
+      //
+      // continue to next page
       next()
     }
   }
@@ -169,15 +202,17 @@ export default [
           {call: 'location', modifier: 'temp', argument: 'top'},
           {call: 'transition', modifier: 'temp', argument: {time: '2.0s', opacity: '0.6s'}},
           {call: 'inverse', modifier: 'temp', argument: true},
-          {call: 'thickness', modifier: 'temp', argument: '10px'}
-          {call: 'trail', modifier: 'temp', argument: '50px'}
+          {call: 'thickness', modifier: 'temp', argument: '10px'},
+          {call: 'trail', modifier: 'temp', argument: '50px'},
+          {call: 'bounce', modifier: 'temp', argument: false },
+          {call: 'gradient', modifier: 'temp', argument: {use: true, gradient: 'predefined'}}
         ]
       }
     }
   }
 ]
 ```
-### vue-router meta options
+### vue-router meta/modify options
 
 |call|modifier|argument|example|
 |:---|---|---|---|
@@ -188,110 +223,47 @@ export default [
 |thickness|`set`, `temp`|`string`|`{call: 'thickness', modifier: 'temp', argument: '10px'}`|
 |transition|`set`, `temp`|`object`|`{call: 'transition', modifier: 'temp', argument: {time: '0.6s', opacity: '0.6s'}}`|
 |trail|`set`, `temp`|`string`|`{call: 'trail', modifier: 'temp', argument: '100px'}`|
-# Methods
+|bounce|`set`, `temp`|`boolean`|`{call: 'bounce', modifier: 'temp', argument: false }`|
+|gradient|`set`, `temp`|`object`|`{call: 'gradient', modifier: 'temp', argument: {use: true, gradient: 'linear-gradient(to left, #ffffff, #000000)'}}`|
+# Methods  
 |function|description|parameters|example|return|
 |:---|---|---|---|---|
-|decrease|decrease the progress bar by a certain %|`number: integer`|`this.$Progress.decrease(number)`|`N/A`|
-|fail|cause the progress bar to end and fail|`N/A`|`this.$Progress.fail()`|`N/A`|
-|finish|finish the progress bar loading|`N/A`|`this.$Progress.finish()`|`N/A`|
-|increase|increase the progress bar by a certain %|`number: integer`|`this.$Progress.increase(number)`|`N/A`|
-|parseMeta|parses progress meta data|`meta: object`|`this.$Progress.parseMeta(meta)`|`N/A`|
-|quickHide|quickly stops and hides the progress bar|`N/A`|`this.$Progress.quickHide()`|true|
-|revert|revert all temporary changes|`N/A`|`this.$Progress.revert()`|`N/A`|
-|set|set the progress bar %|`number: integer`|`this.$Progress.set(number)`|`N/A`|
-|start|start the progress bar loading|`N/A`|`this.$Progress.start()`|`N/A`|
-|randomize|randomize the progress bar style based on parameters|`style: object`|[`this.$Progress.randomize(randomizedTemplate)`](#examples)|`N/A`|
-# Advanced Methods
-|function|description|parameters|example|
-|:---|---|---|---|
-|call|call function bus|`call: string`, `...args`|`this.$Progress.call('temp', 'color', '#ff00ff', true)`|
-|callSetTemp|sets call property (temporarily or permanently)|`property: string`, `value: dynamic`, `temp: boolean`|`this.$Progress.callSetTemp('color', '#ff00ff', true)`|
-|callRevert|reverts call property to default|`call: string`|`this.$Progress.callRevert('thickness')`|
-|callMeta|middleware function for parseMeta|`property: string`, `modifier: string`, `value: dynamic`|`this.$Progress.callMeta('color', 'temp', '#ff00ff')`|
-# Examples
-`randomize`
+|init|link bar with data|`name`|`this.$pb.init('router')|`N/A`|
+|start|start a progress bar|`name`, `(options)`, `(modifier)`|`this.$pb.start('router')`|`N/A`|
+|finish|finish a progress bar|`name`|`this.$pb.finish('router')`|`N/A`|
+|fail|fail a progress bar|`name`|`this.$pb.fail('router')`|`N/A`|
+|create|craete a progress bar|`(name)`, `(options)`|`this.$pb.create('test')`|`N/A`|
+|quickHide|quickly hide a progress bar (automatically in `$pb.start()`)|`name`|`let bQuicklyHidden = this.$pb.quickHide('router')`|`boolean`|
+|randomize|randomize a progress bar|`name`, `(meta)`|`this.$pb.randomize('router')`|`N/A`|
+|destroy|remove a progress bar from memory|`name`|`let bDestroyed = this.$pb.destroy('test')`|`boolean`|
+|progress|increase the progression # of a progress bar (automatically called in `$pb.start()`)|`name`, `(options)`|`this.$pb.progress('test')`|`N/A`|
+|modify|modify a property/properties of a progress bar|`name`, `meta`|`this.$pb.modify('router', {call: 'color', modifier: 'temp', argument: '#f0f0f0'})`|`N/A`|
+# Examples  
+## vue-resource  
 ```html
-<script>
-export default {
-  methods: {
-    randomizeBar () {
-      // any key left out will be automatically randomized by default parameters
-      // defaults:
-      //  color: rgb([0-255], [0-255], [0-255])
-      //  fail: rgb([0-255], [0-255], [0-255])
-      //  thickness: [2-7]px
-      //  location: ['top', 'left', 'right', 'bottom']
-      //  inverse: [true, false]
-      //  transition: [0.50-1.50]s
-      //  trail: [50-100]px
-      randomTemplate = {
-        color: {r: {max: 50}, g: {min: 50, max: 100}}, //   rgb([0-50], [50-100], [0-255])
-        fail: {r: {min: 11}, g: {min: 0, max: 255}, b: {min: 0, max: 255}}, //  rgb([11-255], [0-255], [0-255])
-        thickness: {min: 3, max: 7, suffix: 'px'}, //   [3-7]px
-        location: ['top', 'left'], //   ['top' or 'left']
-        inverse: [true], // always inversed
-        transition: {time: {min: 0.5, max: 1.75}, opacity: {min: 0.7, max: 1.4}} // time: [0.5-1.75]s, opacity: [0.7-1.4]s
-        trail: {min: 20} // min: 20, max: 100, suffix: px
-      }
-      this.$Progress.randomize(randomTemplate)
-    }
-  }
-}
-</script>
-```
-`call`
-```html
-<script>
-export default {
-  methods: {
-    example () {
-      this.$Progress.call('set', 'color', '#f0f0f0')
-      //  since 3rd argument is true, it will be set temporarily
-      this.$Progress.callSetTemp('color', '#120100', true)
-      //  4th argument is optional
-      //  since 4th argument is false, it will set `permanently` instead of `temporarily`
-      //  even though 1st argument is `temp`
-      //  if the first argument is `temp` the default of the 4th argument is `true`, and `set` defaults to `false`
-      this.$Progress.call('temp', 'thickness', '20px', false)
-      //  this.$Progress.parseMeta loops over array of meta data
-      //  but you can call meta if you'd like
-      this.$Progress.call('meta', 'temp', 'thickness', '20px')
-      //  will set the temporary flag of inverse back to default
-      this.$Progress.callRevert('inverse')
-      //  functions below do the same thing
-      this.$Progress.callMeta('fail', 'set', '#ee0000')
-      this.$Progress.call('set', 'fail', '#ee0000')
-      this.$Progress.call('temp', 'fail', '#ee0000', false)
-      this.$Progress.callSetTemp('fail', '#ee0000', false)
-      //  after the progress bar finishes and disappears either naturally or forced by
-      this.$Progress.finish()
-      //  all temporary sets will be reverted to default IF `autoRevert` is set to true.
-    }
-  }
-}
-</script>
-```
-`vue-resource`
-```html
+<template>
+  <div>
+    <vue-progress-bar reference="loading"></vue-progress-bar>
+  </div>
+</template>
 
 <script>
 export default {
   methods: {
     test () {
-      this.$Progress.start()
+      this.$pb.start('loading')
       this.$http.jsonp('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=7waqfqbprs7pajbz28mqf6vz')
       .then((response) => {
-          this.$Progress.finish()
+        this.$pb.finish('loading')
       }, (response) => {
-          this.$Progress.fail()
+        this.$pb.fail('loading')
       })
     }
   }
 }
 </script>
-
 ```
 
 # License
 
-[The MIT License](http://opensource.org/licenses/MIT)
+This project uses an open-source [___MIT License___](http://opensource.org/licenses/MIT) 

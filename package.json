@@ -1,12 +1,14 @@
 {
   "name": "vue-progressbar",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "description": "A lightweight progress bar for vue",
   "main": "dist/vue-progressbar.es5.min.js",
   "scripts": {
-    "build": "npm run copyfiles && npm run build:ugly",
-    "build:ugly": "uglifyjs dist/vue-progressbar.es5.js -cm --comments -o dist/vue-progressbar.es5.min.js --source-map dist/vue-progressbar.es5.js.map",
-    "copyfiles": "copyfiles -f ./src/*.js ./src/*.vue dist"
+    "build": "npm run copyfiles",
+    "copyfiles": "npm run copy:js && npm run copy:assets && npm run copy:vue",
+    "copy:assets": "copyfiles -f ./src/assets/*.js ./src/assets/*.css dist/assets",
+    "copy:js": "copyfiles -f ./src/*.js dist",
+    "copy:vue": "copyfiles -f ./src/*.vue dist"
   },
   "repository": {
     "type": "git",
@@ -19,20 +21,21 @@
     "vue progressbar",
     "progressbar"
   ],
-  "author": [{
-    "name": "XeonPowder",
-    "email": "lmvdzd@gmail.com"
-  }, {
-    "name": "Awe",
-    "email": "hilongjw@qq.com"
-  }],
+  "author": [
+    {
+      "name": "XeonPowder",
+      "email": "lmvdzd@gmail.com"
+    }, {
+      "name": "Awe",
+      "email": "hilongjw@qq.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/hilongjw/vue-progressbar/issues"
   },
   "homepage": "https://github.com/hilongjw/vue-progressbar#readme",
-  "dependencies": {
-    "copyfiles": "^1.0.0",
-    "uglify-js": "^2.7.4"
+  "devDependencies": {
+    "copyfiles": "^1.0.0"
   }
 }
