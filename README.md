@@ -228,7 +228,7 @@ export default [
 # Methods  
 |function|description|parameters|example|return|
 |:---|---|---|---|---|
-|init|link bar with data|`name`|`this.$pb.init('router')|`N/A`|
+|init|link bar with data (automaticallly in `$pb.create()` if init = true in constructor options)|`name`|`this.$pb.init('router')|`N/A`|
 |start|start a progress bar|`name`, `(options)`, `(modifier)`|`this.$pb.start('router')`|`N/A`|
 |finish|finish a progress bar|`name`|`this.$pb.finish('router')`|`N/A`|
 |fail|fail a progress bar|`name`|`this.$pb.fail('router')`|`N/A`|
