@@ -234,6 +234,6 @@ export default {
   }
 }
 </script>
-<style src='./assets/stylelist.css'>
+<style src='./assets/stylelist.min.css'>
 
 </style>
