@@ -113,7 +113,7 @@ export default {
         style.opacity = opacity
         this.classStyle = '__cov-progress '
         if (!gradient.use) {
-          options.canSuccess ? style['background-color'] = options.color : style['background-color'] = options.failedColor + ' !important'
+          options.canSuccess ? style['background-color'] = options.color : style['background-color'] = options.failedColor
         } else if (gradient.use && !qHide) {
           var regexGradient = new RegExp('(predefined)|((linear-gradient)\\(to (top|bottom|left|right), (rgb\\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}\\)|#[a-zA-Z0-9]{6}|#[a-zA-Z0-9]{3}|), (rgb\\([0-9]{1,3}, [0-9]{1,3}, [0-9]{1,3}\\)|#[a-zA-Z0-9]{6}|#[a-zA-Z0-9]{3}|)\\))');
           if (progression !== this.progression) {
@@ -234,6 +234,6 @@ export default {
   }
 }
 </script>
-<style src='../assets/stylelist.css'>
+<style src='../assets/stylelist.min.css'>
 
 </style>

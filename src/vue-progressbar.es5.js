@@ -1006,7 +1006,7 @@ var install = function install(Vue) {
                           }, 100);
                         }, 100);
                       } else if (modifier === 'meta') {
-                        bar.progressions[bar.progression].bar.parseMeta(options);
+                        this2.modify(bar, options);
                         this2.startTimer2 = setTimeout(function () {
                           this2.progress(bar, bar.progressions[bar.progression].data.temp);
                           this2.startTimer3 = setTimeout(function () {
