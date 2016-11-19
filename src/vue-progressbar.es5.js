@@ -128,7 +128,7 @@ var dBardata = function dBardata(options) {
     temp: {
       gradient: {
         use: false,
-        gradient: ''
+        gradient: 'predefined'
       },
       use: false,
       autoRevert: true,
@@ -145,12 +145,13 @@ var dBardata = function dBardata(options) {
         time: '0.2s',
         opacity: '0.6s'
       },
-      bounce: false
+      bounce: false,
+      init: true
     },
     options: {
       gradient: options.gradient !== undefined ? options.gradient : {
         use: false,
-        gradient: ''
+        gradient: 'predefined'
       },
       autoRevert: options.autoRevert !== undefined ? options.autoRevert : true,
       canSuccess: true,
@@ -166,7 +167,8 @@ var dBardata = function dBardata(options) {
         time: '0.2s',
         opacity: '0.6s'
       },
-      bounce: options.bounce !== undefined ? options.bounce : false
+      bounce: options.bounce !== undefined ? options.bounce : false,
+      init: true
     }
   };
   return d;

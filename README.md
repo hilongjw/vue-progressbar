@@ -88,7 +88,7 @@ new Vue({
 |key|description|defualt|options|
 |:---|---|---|---|
 |`autoRevert`|will temporary color changes automatically revert upon completion or fail|`true`|`true`, `false`|
-|`color`|color of the progress bar|`'rgb(143, 255, 199)'`|`RGB`, `HEX`|
+|`color`|color of the progress bar|`'rgb(19, 91, 55)'`|`RGB`, `HEX`|
 |`debug`|output console errors|`false`|`true`, `false`|
 |`failedColor`|color of the progress bar upon load fail|`'red'`|`RGB`, `HEX`|
 |`inverse`|inverse the direction of the progress bar|`false`|`true`, `false`|
@@ -96,8 +96,8 @@ new Vue({
 |`thickness`|thickness of the progress bar|`'2px'`|`px`, `em`, `pt`, `%`, `vh`, `vw`|
 |`transition`|transition speed/opacity of the progress bar|`{time: '0.2s', opacity: '0.6s'}`|`s`, `ms`|
 |`trail`|change the type of progress bar, trailing or not|`'-1px'`|`px`|
-|`bounce`|change the bounce type of the progress bar|`true`|`true`, `false`|
-|`gradient`|should the progress bar use a gradient|`{use: true, gradient: '-linear-gradient(to top, #000fff, #0f0f0f)'}`|use: [`true`, `false`], gradient: [`'predefined'`, `'-linear-gradient(to [top, left], [RGB, HEX], [RGB, HEX]'`]|
+|`bounce`|change the bounce type of the progress bar|`false`|`true`, `false`|
+|`gradient`|should the progress bar use a gradient|`{use: false, gradient: 'predefined'}`|use: [`true`, `false`], gradient: [`'predefined'`, `'-linear-gradient(to [top, left], [RGB, HEX], [RGB, HEX]'`]|
 |`init`|when a progress bar is created should it be initialized with data|`true`|`true`, `false`|
 ## Implementation
 
