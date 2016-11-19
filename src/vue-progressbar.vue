@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import gradients from './assets/gradient-classes'
+import gradients from '../assets/gradient-classes'
 
 const inBrowser = typeof window !== 'undefined'
 
@@ -234,6 +234,6 @@ export default {
   }
 }
 </script>
-<style src='./assets/stylelist.min.css'>
+<style src='../assets/stylelist.css'>
 
 </style>

@@ -171,7 +171,6 @@ var dBardata = function dBardata(options) {
   };
   return d;
 };
-/* eslint-disable */
 var gProgressBar = function gProgressBar() {
   var name = (arguments.length <= 0 ? undefined : arguments[0]) !== null ? arguments.length <= 0 ? undefined : arguments[0] : null;
   var options = (arguments.length <= 1 ? undefined : arguments[1]) !== null ? arguments.length <= 1 ? undefined : arguments[1] : {};
@@ -189,7 +188,6 @@ var gProgressBar = function gProgressBar() {
     queue: []
   };
 };
-/* eslint-enable */
 var gUUID = function gUUID(seed) {
   var s4 = function s4() {
     return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -962,7 +960,7 @@ var install = function install(Vue) {
           bar = this.get(bar);
           if (bar !== null && bar !== undefined) {
             console.error('[%cProgressBar%c][%c' + bar.reference + '%c] Already exists! Creation denied.', 'color: ' + gColor() + ';', 'color: #000;', 'color: ' + gColor() + ';', 'color: #000;');
-            return;
+            return null;
           }
           bar = gProgressBar(name, options);
           this.bars.push(bar);
@@ -970,8 +968,10 @@ var install = function install(Vue) {
           if (bar.progressions[bar.progression].data.init) {
             bar.progressions[bar.progression].data.init = false;
             this.init(bar);
+            return bar.reference;
           } else {
             console.log('[%cProgressBar%c][%c' + bar.reference + '%c] Manual initialization required!', 'color: ' + gColor() + ';', 'color: #000;', 'color: ' + gColor() + ';', 'color: #000;');
+            return bar.reference;
           }
         } else {
           console.error('[%cProgressBar%c][%cVueJS%c-%c' + Vue.version + '%c] Out of date! Please update to \'v%c2.x%c\'', 'color: ' + gColor() + ';', 'color: #000;', 'color: ' + gColor() + ';', 'color: #000;', 'color: ' + gColor() + ';', 'color: #000;', 'color: ' + gColor() + ';', 'color: #000;');
