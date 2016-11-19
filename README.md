@@ -16,6 +16,7 @@
 
 # Demo
 * [__Demo (not updated yet with newest features)__](http://hilongjw.github.io/vue-progressbar/index.html)  
+* [__Demo (updated)__](https://xeonpowder.github.io/vue-progressbar/)
 * [__Trailing progress bar + randomizer__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-13_04-29-03.mp4)  
 * [__Vue-router meta progress bar__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-13_04-30-24.mp4)  
 * [__Multi progress bar support__](https://dl.dropboxusercontent.com/u/79194953/ShareX/2016/11/2016-11-14_03-16-45.mp4)
