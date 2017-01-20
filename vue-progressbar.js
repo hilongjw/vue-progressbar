@@ -2,6 +2,20 @@
 
 import vueProgressBar from './vue-progressbar.vue'
 
+function assign (target, source) { // eslint-disable-line no-unused-vars
+    for (var index = 1, key, src; index < arguments.length; ++index) {
+        src = arguments[index];
+
+        for (key in src) {
+            if (Object.prototype.hasOwnProperty.call(src, key)) {
+                target[key] = src[key];
+            }
+        }
+    }
+
+    return target;
+};
+
 module.exports.install = function (Vue, options = {}) {
     const isVueNext = Vue.version.split('.')[0] === '2'
     const inBrowser = typeof window !== 'undefined'
@@ -199,7 +213,7 @@ module.exports.install = function (Vue, options = {}) {
         }
     }
 
-    const progressOptions = Object.assign(DEFAULT_OPTION, options)
+    const progressOptions = assign(DEFAULT_OPTION, options)
 
     const VueProgressBarEventBus = new Vue({
         data: {
