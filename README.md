@@ -24,7 +24,7 @@
 $ npm install vue-progressbar
 
 #yarn
-$ yarn vue-progressbar
+$ yarn add vue-progressbar
 ```
 # Usage
 
