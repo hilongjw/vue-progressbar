@@ -13,7 +13,7 @@ function assign (target, source) { // eslint-disable-line no-unused-vars
         }
     }
 
-    return target;
+    return target
 }
 
 module.exports.install = function (Vue, options = {}) {
@@ -28,7 +28,8 @@ module.exports.install = function (Vue, options = {}) {
         thickness: '2px',
         transition: {
             speed: '0.2s',
-            opacity: '0.6s'
+            opacity: '0.6s',
+            termination: 300
         },
         autoRevert: true,
         location: 'top',
@@ -89,7 +90,7 @@ module.exports.install = function (Vue, options = {}) {
                         }, 300)
                     }
                 })
-            }, 800)
+            }, this.$vm.RADON_LOADING_BAR.options.transition.termination)
         },
         pause () {
             clearInterval(this.state.timer)
