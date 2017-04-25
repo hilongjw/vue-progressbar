@@ -14,7 +14,7 @@ function assign (target, source) { // eslint-disable-line no-unused-vars
     }
 
     return target;
-};
+}
 
 module.exports.install = function (Vue, options = {}) {
     const isVueNext = Vue.version.split('.')[0] === '2'
