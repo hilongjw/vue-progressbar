@@ -42,7 +42,7 @@ const options = {
   transition: {
     speed: '0.2s',
     opacity: '0.6s',
-    termination: 400,
+    termination: 400
   },
   autoRevert: true,
   location: 'left',
