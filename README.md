@@ -41,7 +41,8 @@ const options = {
   thickness: '5px',
   transition: {
     speed: '0.2s',
-    opacity: '0.6s'
+    opacity: '0.6s',
+    termination: 400,
   },
   autoRevert: true,
   location: 'left',
@@ -124,7 +125,7 @@ export default [
           {call: 'color', modifier: 'temp', argument: '#ffb000'},
           {call: 'fail', modifier: 'temp', argument: '#6e0000'},
           {call: 'location', modifier: 'temp', argument: 'top'},
-          {call: 'transition', modifier: 'temp', argument: {speed: '1.5s', opacity: '0.6s'}}
+          {call: 'transition', modifier: 'temp', argument: {speed: '1.5s', opacity: '0.6s', termination: 400}}
         ]
       }
     }
