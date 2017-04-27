@@ -42,7 +42,7 @@ const options = {
   transition: {
     speed: '0.2s',
     opacity: '0.6s',
-    termination: 400
+    termination: 300
   },
   autoRevert: true,
   location: 'left',
@@ -63,7 +63,7 @@ new Vue({
 | `color`|color of the progress bar|`'rgb(143, 255, 199)'`|`RGB` `HEX` `HSL` `HSV` `VEC`|
 |`failedColor`|color of the progress bar upon load fail|`'red'`|`RGB`, `HEX`, `HSL`, `HSV`, `VEC`
 |`thickness`|thickness of the progress bar|`'2px'`|`px`, `em`, `pt`, `%`, `vh`, `vw`|
-|`transition`|transition speed/opacity of the progress bar|`{speed: '0.2s', opacity: '0.6s'}`|`speed`, `opacity`|
+|`transition`|transition speed/opacity/termination of the progress bar|`{speed: '0.2s', opacity: '0.6s', termination: 300}`|`speed`, `opacity`, `termination`|
 |`autoRevert`|will temporary color changes automatically revert upon completion or fail|`true`|`true`, `false`|
 |`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
 |`inverse`|inverse the direction of the progress bar|`false`|`true`, `false`|
@@ -139,7 +139,7 @@ export default [
 |color|`set`, `temp`|`string`|`{call: 'color', modifier: 'temp', argument: '#ffb000'}`|
 |fail|`set`, `temp`|`string`|`{call: 'fail', modifier: 'temp', argument: '#ffb000'}`|
 |location|`set`, `temp`|`string`|`{call: 'location', modifier: 'temp', argument: 'top'}`|
-|transition|`set`, `temp`|` object`|`{call: 'transition', modifier: 'temp', argument: {speed: '0.6s', opacity: '0.6s'}}`|
+|transition|`set`, `temp`|` object`|`{call: 'transition', modifier: 'temp', argument: {speed: '0.6s', opacity: '0.6s', termination: 400}}`|
 
 # Methods
 |function|description|parameters|example|
@@ -153,7 +153,7 @@ export default [
 |setFailColor|cause the fail color to permanently change|`color: string`|`this.$Progress.setFailColor(color)`|
 |setColor|cause the progress color to permanently change|`color: string`|`this.$Progress.setColor(color)`|
 |setLocation|cause the progress bar location to permanently change|`location: string`|`this.$Progress.setLocation(location)`|
-|setTransition|cause the progress bar transition speed/opacity to permanently change|`transition: object`|`this.$Progress.setTransition(transition)`|
+|setTransition|cause the progress bar transition speed/opacity/termination to permanently change|`transition: object`|`this.$Progress.setTransition(transition)`|
 |tempFailColor|cause the fail color to change (temporarily)|`color: string`|`this.$Progress.tempFailColor(color)`|
 |tempColor|cause the progress color to change (temporarily)|`color: string`|`this.$Progress.tempColor(color)`|
 |tempLocation|cause the progress bar location to change (temporarily)|`location: string`|`this.$Progress.tempLocation(location)`|
