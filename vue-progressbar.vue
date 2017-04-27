@@ -58,7 +58,7 @@ export default {
                         transition: {
                             speed: '0.2s',
                             opacity: '0.6s',
-                            termination: 400
+                            termination: 300
                         },
                         location: 'top',
                         autoRevert: true,
