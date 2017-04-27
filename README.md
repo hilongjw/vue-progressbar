@@ -139,7 +139,7 @@ export default [
 |color|`set`, `temp`|`string`|`{call: 'color', modifier: 'temp', argument: '#ffb000'}`|
 |fail|`set`, `temp`|`string`|`{call: 'fail', modifier: 'temp', argument: '#ffb000'}`|
 |location|`set`, `temp`|`string`|`{call: 'location', modifier: 'temp', argument: 'top'}`|
-|transition|`set`, `temp`|` object`|`{call: 'transition', modifier: 'temp', argument: {speed: '0.6s', opacity: '0.6s'}}`|
+|transition|`set`, `temp`|` object`|`{call: 'transition', modifier: 'temp', argument: {speed: '0.6s', opacity: '0.6s', termination: 400}}`|
 
 # Methods
 |function|description|parameters|example|
@@ -153,7 +153,7 @@ export default [
 |setFailColor|cause the fail color to permanently change|`color: string`|`this.$Progress.setFailColor(color)`|
 |setColor|cause the progress color to permanently change|`color: string`|`this.$Progress.setColor(color)`|
 |setLocation|cause the progress bar location to permanently change|`location: string`|`this.$Progress.setLocation(location)`|
-|setTransition|cause the progress bar transition speed/opacity to permanently change|`transition: object`|`this.$Progress.setTransition(transition)`|
+|setTransition|cause the progress bar transition speed/opacity/termination to permanently change|`transition: object`|`this.$Progress.setTransition(transition)`|
 |tempFailColor|cause the fail color to change (temporarily)|`color: string`|`this.$Progress.tempFailColor(color)`|
 |tempColor|cause the progress color to change (temporarily)|`color: string`|`this.$Progress.tempColor(color)`|
 |tempLocation|cause the progress bar location to change (temporarily)|`location: string`|`this.$Progress.tempLocation(location)`|
