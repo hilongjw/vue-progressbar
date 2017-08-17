@@ -2,7 +2,7 @@
   "name": "vue-progressbar",
   "version": "0.7.3",
   "description": "A lightweight progress bar for vue",
-  "main": "vue-progressbar.es5.js",
+  "main": "dist/vue-progressbar.js",
   "scripts": {
     "build": "rollup -c"
   },
