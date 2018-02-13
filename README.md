@@ -185,6 +185,41 @@ export default {
 </script>
 
 ```
+---
+Accessing the progress bar externally through the vue instance (e.g. axios interceptors)
+
+**main.js**
+```js
+// main.js from Usage section
+
+Vue.use(VueProgressBar, options)
+
+export default new Vue({ // export the Vue instance
+  ...App
+}).$mount('#app')
+```
+**api-axios.js**
+```js
+import axios from 'axios';
+import app from '../main'; // import the instance
+
+const instance = axios.create({
+    baseURL: '/api'
+});
+
+instance.interceptors.request.use(config => {
+    app.$Progress.start(); // for every request start the progress
+    return config;
+});
+
+instance.interceptors.response.use(response => {
+    app.$Progress.finish(); // finish when a response is received
+    return response;
+});
+
+export default instance; // export axios instace to be imported in your app
+```
+
 
 # License
 
