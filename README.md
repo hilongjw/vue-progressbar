@@ -67,6 +67,7 @@ new Vue({
 |`autoRevert`|will temporary color changes automatically revert upon completion or fail|`true`|`true`, `false`|
 |`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
 |`inverse`|inverse the direction of the progress bar|`false`|`true`, `false`|
+|`autoFinish`|allow the progress bar to finish automatically when it is close to 100%|`false`|`true`, `true`|
 
 ## Implementation
 

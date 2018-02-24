@@ -33,7 +33,8 @@ module.exports.install = function (Vue, options = {}) {
         },
         autoRevert: true,
         location: 'top',
-        inverse: false
+        inverse: false,
+        autoFinish: true
     }
 
     let Progress = {
@@ -57,7 +58,7 @@ module.exports.install = function (Vue, options = {}) {
             clearInterval(this.state.timer)
             this.state.timer = setInterval(() => {
                 this.increase(this.state.cut * Math.random())
-                if (this.$vm.RADON_LOADING_BAR.percent > 95) {
+                if (this.$vm.RADON_LOADING_BAR.percent > 95 && this.$vm.RADON_LOADING_BAR.options.autoFinish) {
                     this.finish()
                 }
             }, 100)
@@ -71,7 +72,7 @@ module.exports.install = function (Vue, options = {}) {
             return Math.floor(this.$vm.RADON_LOADING_BAR.percent)
         },
         increase (num) {
-            this.$vm.RADON_LOADING_BAR.percent = this.$vm.RADON_LOADING_BAR.percent + Math.floor(num)
+            this.$vm.RADON_LOADING_BAR.percent = Math.min(99, this.$vm.RADON_LOADING_BAR.percent + Math.floor(num))
         },
         decrease (num) {
             this.$vm.RADON_LOADING_BAR.percent = this.$vm.RADON_LOADING_BAR.percent - Math.floor(num)
