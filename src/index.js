@@ -16,7 +16,7 @@ function assign (target, source) { // eslint-disable-line no-unused-vars
     return target
 }
 
-module.exports.install = function (Vue, options = {}) {
+function install (Vue, options = {}) {
     const isVueNext = Vue.version.split('.')[0] === '2'
     const inBrowser = typeof window !== 'undefined'
 
@@ -234,4 +234,8 @@ module.exports.install = function (Vue, options = {}) {
     Vue.component('vue-progress-bar', vueProgressBar)
 
     Vue.prototype.$Progress = Progress
+}
+
+export default {
+    install
 }

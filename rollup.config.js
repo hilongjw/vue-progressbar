@@ -14,6 +14,7 @@ export default {
     entry: `src/index.js`,
     dest: `dist/vue-progressbar.js`,
     format: 'umd',
+    moduleName: 'VueProgressBar',
     plugins: [
         json(),
         vue({
