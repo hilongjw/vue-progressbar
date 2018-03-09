@@ -1,6 +1,6 @@
 {
   "name": "vue-progressbar",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "A lightweight progress bar for vue",
   "main": "dist/vue-progressbar.js",
   "scripts": {
