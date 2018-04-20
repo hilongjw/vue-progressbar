@@ -1,6 +1,5 @@
 <style>
 .__cov-progress {
-  position: fixed;
   opacity: 1;
   z-index: 999999;
 }
@@ -18,7 +17,8 @@ export default {
             let location = this.progress.options.location
             let style = {
                 'background-color': this.progress.options.canSuccess ? this.progress.options.color : this.progress.options.failedColor,
-                'opacity': this.progress.options.show ? 1 : 0
+                'opacity': this.progress.options.show ? 1 : 0,
+                'position': this.progress.options.position
             }
             if (location == 'top' || location == 'bottom') {
                 location === 'top' ? style.top = '0px' : style.bottom = '0px'

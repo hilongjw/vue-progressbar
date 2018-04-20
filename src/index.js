@@ -24,6 +24,7 @@ function install (Vue, options = {}) {
         canSuccess: true,
         show: false,
         color: '#73ccec',
+        position: 'fixed',
         failedColor: 'red',
         thickness: '2px',
         transition: {
