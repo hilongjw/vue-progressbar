@@ -15,31 +15,34 @@ export default {
     serverCacheKey: () => 'Progress',
     computed: {
         style () {
-            let location = this.progress.options.location
-            let style = {
-                'background-color': this.progress.options.canSuccess ? this.progress.options.color : this.progress.options.failedColor,
-                'opacity': this.progress.options.show ? 1 : 0
+            const progress = this.progress
+            const options = progress.options
+            const isShow = !!options.show
+            const location = options.location
+            const style = {
+                'background-color': options.canSuccess ? options.color : options.failedColor,
+                'opacity': options.show ? 1 : 0
             }
-            if (location == 'top' || location == 'bottom') {
+            if (location === 'top' || location === 'bottom') {
                 location === 'top' ? style.top = '0px' : style.bottom = '0px'
-                if (!this.progress.options.inverse) {
+                if (!options.inverse) {
                     style.left = '0px'
                 } else {
                     style.right = '0px'
                 }
-                style.width = this.progress.percent + '%'
-                style.height = this.progress.options.thickness
-                style.transition = "width " + this.progress.options.transition.speed + ", opacity " + this.progress.options.transition.opacity
-            } else if (location == 'left' || location == 'right') {
+                style.width = progress.percent + '%'
+                style.height = options.thickness
+                style.transition = (isShow ? "width " + options.transition.speed + ", " : "") + "opacity " + options.transition.opacity
+            } else if (location === 'left' || location === 'right') {
                 location === 'left' ? style.left = '0px' : style.right = '0px'
-                if (!this.progress.options.inverse) {
+                if (!options.inverse) {
                     style.bottom = '0px'
                 } else {
                     style.top = '0px'
                 }
-                style.height = this.progress.percent + '%'
-                style.width = this.progress.options.thickness
-                style.transition = "height " + this.progress.options.transition.speed + ", opacity " + this.progress.options.transition.opacity
+                style.height = progress.percent + '%'
+                style.width = options.thickness
+                style.transition = (isShow ? "height " + options.transition.speed + ", " : "") + "opacity " + options.transition.opacity
             }
             return style
         },
