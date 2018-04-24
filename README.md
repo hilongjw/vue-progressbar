@@ -58,7 +58,7 @@ new Vue({
 
 ```
 ## Constructor Options
-|key|description|defualt|options|
+|key|description|default|options|
 |:---|---|---|---|
 | `color`|color of the progress bar|`'rgb(143, 255, 199)'`|`RGB` `HEX` `HSL` `HSV` `VEC`|
 |`failedColor`|color of the progress bar upon load fail|`'red'`|`RGB`, `HEX`, `HSL`, `HSV`, `VEC`
@@ -66,6 +66,7 @@ new Vue({
 |`transition`|transition speed/opacity/termination of the progress bar|`{speed: '0.2s', opacity: '0.6s', termination: 300}`|`speed`, `opacity`, `termination`|
 |`autoRevert`|will temporary color changes automatically revert upon completion or fail|`true`|`true`, `false`|
 |`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
+|`position`|change the position of the progress bar|`fixed`|`relative`, `absolute`, `fixed`|
 |`inverse`|inverse the direction of the progress bar|`false`|`true`, `false`|
 |`autoFinish`|allow the progress bar to finish automatically when it is close to 100%|`false`|`true`, `true`|
 

@@ -1,6 +1,5 @@
 <style>
 .__cov-progress {
-  position: fixed;
   opacity: 1;
   z-index: 999999;
 }
@@ -21,7 +20,8 @@ export default {
             const location = options.location
             const style = {
                 'background-color': options.canSuccess ? options.color : options.failedColor,
-                'opacity': options.show ? 1 : 0
+                'opacity': options.show ? 1 : 0,
+                'position': options.position
             }
             if (location === 'top' || location === 'bottom') {
                 location === 'top' ? style.top = '0px' : style.bottom = '0px'
