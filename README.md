@@ -120,7 +120,7 @@ export default [
   {
     path: '/achievement',
     name: 'achievement',
-    component: './components/Achievement.vue'
+    component: './components/Achievement.vue',
     meta: {
       progress: {
         func: [
