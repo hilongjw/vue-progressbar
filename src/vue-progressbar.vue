@@ -55,6 +55,7 @@ export default {
                     options: {
                         canSuccess: true,
                         show: false,
+                        position: 'static',
                         color: 'rgb(19, 91, 55)',
                         failedColor: 'red',
                         thickness: '2px',
