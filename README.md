@@ -219,7 +219,7 @@ instance.interceptors.response.use(response => {
     return response;
 });
 
-export default instance; // export axios instace to be imported in your app
+export default instance; // export axios instance to be imported in your app
 ```
 
 
