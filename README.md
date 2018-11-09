@@ -1,17 +1,14 @@
-# vue-progressbar
+# @chiaweilee/vue-progressbar
 
-# Table of Contents
-* [___Demo___](#demo)
-* [___Requirements___](#requirements)
-* [___Installation___](#installation)
-* [___Usage___](#usage)  
- * [___Constructor Options___](#constructor-options)
- * [___Implementation___](#implementation)
- * [___vue-router___](#vue-router)  
-   * [___meta options___](#vue--router-meta-options)  
-* [___Methods___](#methods)
-* [___Examples___](#examples)
-* [___License___](#license)
+<a href="https://npmcharts.com/compare/@chiaweilee/vue-progressbar?minimal=true"><img src="https://img.shields.io/npm/dm/@chiaweilee/vue-progressbar.svg" alt="Downloads"></a>
+<a href="https://www.npmjs.com/package/@chiaweilee/vue-progressbar"><img src="https://img.shields.io/npm/v/@chiaweilee/vue-progressbar.svg" alt="Version"></a>
+<a href="https://www.npmjs.com/package/@chiaweilee/vue-progressbar"><img src="https://img.shields.io/npm/l/@chiaweilee/vue-progressbar.svg" alt="License"></a>
+
+# Changelog
+
+⚠️ this is a `ahead fork` version of [vue-progressbar](https://github.com/hilongjw/vue-progressbar)
+
+- [#81](https://github.com/hilongjw/vue-progressbar/pull/81) No component require anymore~
 
 # Demo
 [___Demo___](http://hilongjw.github.io/vue-progressbar/index.html)
@@ -21,10 +18,10 @@
 # Installation
 ```bash
 # npm
-$ npm install vue-progressbar
+$ npm install @chiaweilee/vue-progressbar
 
 #yarn
-$ yarn add vue-progressbar
+$ yarn add @chiaweilee/vue-progressbar
 ```
 # Usage
 
@@ -32,7 +29,7 @@ main.js
 
 ```javascript
 import Vue from 'vue'
-import VueProgressBar from 'vue-progressbar'
+import VueProgressBar from '@chiaweilee/vue-progressbar'
 import App from './App'
 
 const options = {
@@ -73,13 +70,14 @@ new Vue({
 ## Implementation
 
 App.vue
+
+⚠️ you don't have to mount `<vue-progress-bar/>` any more [#81](https://github.com/hilongjw/vue-progressbar/pull/81)
+
 ```html
 <template>
     <div id="app">
         <!-- for example router view -->
         <router-view></router-view>
-        <!-- set progressbar -->
-        <vue-progress-bar></vue-progress-bar>
     </div>
 </template>
 
