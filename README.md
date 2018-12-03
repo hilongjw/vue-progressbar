@@ -68,7 +68,7 @@ new Vue({
 |`location`|change the location of the progress bar|`top`|`left`, `right`, `top`, `bottom`|
 |`position`|change the position of the progress bar|`fixed`|`relative`, `absolute`, `fixed`|
 |`inverse`|inverse the direction of the progress bar|`false`|`true`, `false`|
-|`autoFinish`|allow the progress bar to finish automatically when it is close to 100%|`false`|`true`, `false`|
+|`autoFinish`|allow the progress bar to finish automatically when it is close to 100%|`true`|`true`, `false`|
 
 ## Implementation
 
