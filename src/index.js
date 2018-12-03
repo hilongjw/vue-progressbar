@@ -233,7 +233,8 @@ function install (Vue, options = {}) {
         Progress.init(VueProgressBarEventBus)
     }
 
-    Vue.component('vue-progress-bar', vueProgressBar)
+    const Component = Vue.extend(vueProgressBar)
+    document.body.appendChild((new Component().$mount()).$el)
 
     Vue.prototype.$Progress = Progress
 }
