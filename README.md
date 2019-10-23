@@ -1,17 +1,19 @@
 # vue-progressbar
 
 # Table of Contents
-* [___Demo___](#demo)
-* [___Requirements___](#requirements)
-* [___Installation___](#installation)
-* [___Usage___](#usage)  
- * [___Constructor Options___](#constructor-options)
- * [___Implementation___](#implementation)
- * [___vue-router___](#vue-router)  
-   * [___meta options___](#vue--router-meta-options)  
-* [___Methods___](#methods)
-* [___Examples___](#examples)
-* [___License___](#license)
+- [vue-progressbar](#vue-progressbar)
+- [Table of Contents](#table-of-contents)
+- [Demo](#demo)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Constructor Options](#constructor-options)
+  - [Implementation](#implementation)
+  - [vue-router](#vue-router)
+    - [vue-router meta options](#vue-router-meta-options)
+- [Methods](#methods)
+- [Examples](#examples)
+- [License](#license)
 
 # Demo
 [___Demo___](http://hilongjw.github.io/vue-progressbar/index.html)
@@ -221,7 +223,16 @@ instance.interceptors.response.use(response => {
 
 export default instance; // export axios instance to be imported in your app
 ```
+---
+Accessing the progress bar externally through the vue store
 
+```
+
+// More commonly better practice to use Axios Interceptors
+// For the edge cases, access the Vue instance through *_vm*
+
+this._vm.$Progress.start()
+```
 
 # License
 
