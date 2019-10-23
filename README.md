@@ -231,7 +231,7 @@ Accessing the progress bar externally through the vue store
 // More commonly better practice to use Axios Interceptors
 // For the edge cases, access the Vue instance through *_vm*
 
-this._vm.#Progress.start()
+this._vm.$Progress.start()
 ```
 
 # License
