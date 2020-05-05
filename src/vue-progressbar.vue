@@ -19,7 +19,7 @@ export default {
             const isShow = !!options.show
             const location = options.location
             const style = {
-                'background-color': options.canSuccess ? options.color : options.failedColor,
+                'background': options.canSuccess ? options.color : options.failedColor,
                 'opacity': options.show ? 1 : 0,
                 'position': options.position
             }
