@@ -69,6 +69,9 @@ function install (Vue, options = {}) {
             this.$vm.RADON_LOADING_BAR.options.canSuccess = true
             this.$vm.RADON_LOADING_BAR.percent = Math.floor(num)
         },
+        status(){
+            return this.$vm.RADON_LOADING_BAR.options.percent;
+        },
         get () {
             return Math.floor(this.$vm.RADON_LOADING_BAR.percent)
         },
